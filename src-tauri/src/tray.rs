@@ -491,11 +491,11 @@ fn build_menu(app: &AppHandle, inputs: &MenuInputs) -> tauri::Result<(Menu<tauri
     // haven't translated the key yet get the English string rather than a
     // blank menu item (build.rs emits "" for missing keys).
     let secure_input_warning = if inputs.warning {
-        let english_strings = get_tray_translations(Some("en".to_string()));
-        let label = fallback_if_empty(
-            &strings.secure_input_warning,
-            &english_strings.secure_input_warning,
-        );
+        let label = if strings.secure_input_warning.is_empty() {
+            get_tray_translations(Some("en".to_string())).secure_input_warning
+        } else {
+            strings.secure_input_warning.clone()
+        };
         Some(MenuItem::with_id(
             app,
             "secure_input_warning",
