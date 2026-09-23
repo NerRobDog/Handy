@@ -191,7 +191,7 @@
           },
           "cycle_model": {
             "name": "Atalho do Próximo Modelo",
-            "description": "Muda para o próximo modelo marcado com estrela. Com menos de dois marcados, percorre todos os modelos transferidos."
+            "description": "Muda para o próximo modelo marcado com estrela. Com menos de dois marcados, percorre todos os modelos baixados."
           }
         },
         "errors": {
@@ -717,7 +717,7 @@
       "translationOn": "Tradução ativada",
       "translationOff": "Tradução desativada",
       "modelNoTranslation": "{{model}} · não traduz",
-      "noTranslationModel": "Nenhum modelo transferido consegue traduzir",
+      "noTranslationModel": "Nenhum modelo baixado consegue traduzir",
       "switchFailed": "Não foi possível mudar para {{model}}"
     }
   },
