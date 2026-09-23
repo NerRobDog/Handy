@@ -638,7 +638,7 @@
       },
       "fork": {
         "title": "Handy.satoru",
-        "description": "由 CJ Pais 打造的 Handy 複刻版，提供模型與翻譯的快速快捷鍵",
+        "description": "CJ Pais 開發的 Handy 的複刻版，提供模型與翻譯的快速快捷鍵",
         "button": "檢視複刻版"
       }
     }
