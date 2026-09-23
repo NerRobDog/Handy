@@ -1,9 +1,12 @@
 use crate::input;
 use crate::settings;
 use crate::settings::{OverlayPosition, OverlayStyle};
+use serde::{Deserialize, Serialize};
+use specta::Type;
 use std::sync::atomic::{AtomicBool, AtomicU64, Ordering};
 use std::time::{SystemTime, UNIX_EPOCH};
 use tauri::{AppHandle, Emitter, Manager, PhysicalPosition, PhysicalSize};
+use tauri_specta::Event;
 
 #[cfg(not(target_os = "macos"))]
 use log::debug;
@@ -630,6 +633,53 @@ pub fn show_processing_overlay(app_handle: &AppHandle) {
     show_overlay_state(app_handle, "processing");
 }
 
+/// What a transient overlay notice reports. The overlay localizes each kind
+/// (see `src/overlay/notice.ts`).
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Serialize, Deserialize, Type)]
+#[serde(rename_all = "snake_case")]
+pub enum OverlayNoticeKind {
+    TranslationOn,
+    TranslationOff,
+    Model,
+    ModelNoTranslation,
+    NoTranslationModel,
+    SwitchFailed,
+}
+
+/// Short-lived overlay message shown after a quick-switch shortcut.
+#[derive(Clone, Debug, Serialize, Deserialize, Type, tauri_specta::Event)]
+pub struct OverlayNoticeEvent {
+    pub kind: OverlayNoticeKind,
+    /// Display name of the model the notice is about, when there is one.
+    pub model: Option<String>,
+}
+
+const NOTICE_VISIBLE_MS: u64 = 1500;
+
+/// Shows `notice` in the overlay for a moment, then hides it — unless a newer
+/// overlay session (e.g. a recording) took over in the meantime. Respects the
+/// overlay being turned off.
+pub fn show_notice_overlay(app_handle: &AppHandle, notice: OverlayNoticeEvent) {
+    if settings::get_settings(app_handle).overlay_style == OverlayStyle::None {
+        return;
+    }
+    let handle = app_handle.clone();
+    let _ = app_handle.run_on_main_thread(move || {
+        // Payload first, so the overlay has the text when "show-overlay" lands.
+        let _ = notice.emit_to(&handle, "recording_overlay");
+        show_overlay_state_on_main(&handle, "notice");
+        // Shows are serialized on the main thread, so this is our session.
+        let generation = OVERLAY_SHOW_GENERATION.load(Ordering::SeqCst);
+        let hide_handle = handle.clone();
+        std::thread::spawn(move || {
+            std::thread::sleep(std::time::Duration::from_millis(NOTICE_VISIBLE_MS));
+            if OVERLAY_SHOW_GENERATION.load(Ordering::SeqCst) == generation {
+                hide_recording_overlay(&hide_handle);
+            }
+        });
+    });
+}
+
 /// Updates the overlay window position based on current settings
 pub fn update_overlay_position(app_handle: &AppHandle) {
     // Positioning queries monitors/cursor (GDK/Xlib on Linux) and moves the
@@ -888,5 +938,38 @@ mod tests {
         );
         // Top offset rides the DPI scale alone, so the top edge doesn't move.
         assert_eq!(top_y, -195);
+    }
+
+    #[test]
+    fn notice_kinds_serialize_as_snake_case() {
+        use super::OverlayNoticeKind;
+        let cases = [
+            (OverlayNoticeKind::TranslationOn, "translation_on"),
+            (OverlayNoticeKind::TranslationOff, "translation_off"),
+            (OverlayNoticeKind::Model, "model"),
+            (
+                OverlayNoticeKind::ModelNoTranslation,
+                "model_no_translation",
+            ),
+            (
+                OverlayNoticeKind::NoTranslationModel,
+                "no_translation_model",
+            ),
+            (OverlayNoticeKind::SwitchFailed, "switch_failed"),
+        ];
+        for (kind, expected) in cases {
+            assert_eq!(
+                serde_json::to_value(kind).unwrap(),
+                serde_json::json!(expected)
+            );
+        }
+    }
+
+    #[test]
+    fn notice_uses_the_compact_overlay_size() {
+        assert_eq!(
+            overlay_dimensions("notice"),
+            (OVERLAY_WIDTH, OVERLAY_HEIGHT)
+        );
     }
 }
