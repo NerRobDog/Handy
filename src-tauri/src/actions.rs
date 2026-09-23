@@ -926,6 +926,32 @@ impl ShortcutAction for TestAction {
     }
 }
 
+// Toggle Translation Action
+struct ToggleTranslationAction;
+
+impl ShortcutAction for ToggleTranslationAction {
+    fn start(&self, app: &AppHandle, _binding_id: &str, _shortcut_str: &str) {
+        crate::quick_switch::toggle_translation_mode(app);
+    }
+
+    fn stop(&self, _app: &AppHandle, _binding_id: &str, _shortcut_str: &str) {
+        // Acts on press only
+    }
+}
+
+// Cycle Model Action
+struct CycleModelAction;
+
+impl ShortcutAction for CycleModelAction {
+    fn start(&self, app: &AppHandle, _binding_id: &str, _shortcut_str: &str) {
+        crate::quick_switch::cycle_model(app);
+    }
+
+    fn stop(&self, _app: &AppHandle, _binding_id: &str, _shortcut_str: &str) {
+        // Acts on press only
+    }
+}
+
 // Static Action Map
 pub static ACTION_MAP: Lazy<HashMap<String, Arc<dyn ShortcutAction>>> = Lazy::new(|| {
     let mut map = HashMap::new();
@@ -946,6 +972,14 @@ pub static ACTION_MAP: Lazy<HashMap<String, Arc<dyn ShortcutAction>>> = Lazy::ne
     map.insert(
         "test".to_string(),
         Arc::new(TestAction) as Arc<dyn ShortcutAction>,
+    );
+    map.insert(
+        "toggle_translation".to_string(),
+        Arc::new(ToggleTranslationAction) as Arc<dyn ShortcutAction>,
+    );
+    map.insert(
+        "cycle_model".to_string(),
+        Arc::new(CycleModelAction) as Arc<dyn ShortcutAction>,
     );
     map
 });
@@ -1036,5 +1070,15 @@ mod tests {
         assert!(!should_use_streaming_overlay(OverlayStyle::Live, false));
         assert!(!should_use_streaming_overlay(OverlayStyle::Minimal, true));
         assert!(!should_use_streaming_overlay(OverlayStyle::None, true));
+    }
+
+    #[test]
+    fn every_default_binding_has_an_action() {
+        for id in crate::settings::get_default_settings().bindings.keys() {
+            assert!(
+                super::ACTION_MAP.contains_key(id),
+                "no action registered for default binding '{id}'"
+            );
+        }
     }
 }
