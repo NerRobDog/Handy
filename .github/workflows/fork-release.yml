@@ -1,0 +1,61 @@
+name: "Handy.satoru Release"
+
+# Builds an unsigned macOS Apple Silicon bundle and attaches it to a DRAFT
+# release. Publishing the draft is a manual step on GitHub.
+on:
+  workflow_dispatch:
+    inputs:
+      fork-revision:
+        description: "Fork revision N for the tag v<app version>-satoru.<N>"
+        required: true
+        default: "1"
+
+jobs:
+  create-release:
+    permissions:
+      contents: write
+    runs-on: ubuntu-latest
+    outputs:
+      release-id: ${{ steps.create-release.outputs.result }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v5
+
+      - name: Get version from tauri.conf.json
+        id: get-version
+        shell: bash
+        run: |
+          VERSION=$(grep -o '"version": "[^"]*"' src-tauri/tauri.conf.json | cut -d'"' -f4)
+          echo "version=$VERSION" >> "$GITHUB_OUTPUT"
+
+      - name: Create draft release
+        id: create-release
+        uses: actions/github-script@v9
+        with:
+          script: |
+            const tag = `v${{ steps.get-version.outputs.version }}-satoru.${{ inputs.fork-revision }}`
+            const { data } = await github.rest.repos.createRelease({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              tag_name: tag,
+              target_commitish: context.sha,
+              name: `Handy.satoru ${tag.slice(1)}`,
+              body: "Unsigned build for Apple Silicon Macs. See FORK.md for install steps.",
+              draft: true,
+              prerelease: false,
+            })
+            return data.id
+
+  build-macos-arm64:
+    permissions:
+      contents: write
+    needs: create-release
+    uses: ./.github/workflows/build.yml
+    with:
+      platform: "macos-26"
+      target: "aarch64-apple-darwin"
+      build-args: "--target aarch64-apple-darwin"
+      release-id: ${{ needs.create-release.outputs.release-id }}
+      asset-prefix: "handy-satoru"
+      sign-binaries: false
+    secrets: inherit
