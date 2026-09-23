@@ -1,6 +1,7 @@
 import { listen } from "@tauri-apps/api/event";
 import React, { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
+import { AudioLines, Languages } from "lucide-react";
 import "./RecordingOverlay.css";
 import { commands, events } from "@/bindings";
 import type {
@@ -8,11 +9,18 @@ import type {
   StreamPhaseEvent,
   StreamTextEvent,
   StreamWorkKind,
+  OverlayNoticeEvent,
 } from "@/bindings";
+import { isTranslationNotice, noticeLabel } from "./notice";
 import i18n, { syncLanguageFromSettings } from "@/i18n";
 import { getLanguageDirection } from "@/lib/utils/rtl";
 
-type OverlayState = "recording" | "streaming" | "transcribing" | "processing";
+type OverlayState =
+  | "recording"
+  | "streaming"
+  | "transcribing"
+  | "processing"
+  | "notice";
 
 // Number of reactive bars in the waveform (the simple, smoothed style shared by
 // every overlay form). Mic levels arrive as 16 FFT buckets; we take the first N.
@@ -43,6 +51,7 @@ const RecordingOverlay: React.FC = () => {
   // True once live text overflows the cap. A top overlay fades its top edge only
   // while overflowing, so the resting first line stays crisp flush under the pill.
   const [overflowing, setOverflowing] = useState(false);
+  const [notice, setNotice] = useState<OverlayNoticeEvent | null>(null);
 
   const smoothedLevelsRef = useRef<number[]>(Array(16).fill(0));
   // Live-text scroll-back: the text region "sticks" to the newest line while the
@@ -121,6 +130,10 @@ const RecordingOverlay: React.FC = () => {
         if (payload.kind) setWorkKind(payload.kind);
       });
 
+      const unlistenNotice = await events.overlayNoticeEvent.listen((event) => {
+        setNotice(event.payload);
+      });
+
       return () => {
         unlistenShow();
         unlistenHide();
@@ -128,6 +141,7 @@ const RecordingOverlay: React.FC = () => {
         unlistenLevel();
         unlistenStream();
         unlistenPhase();
+        unlistenNotice();
       };
     };
 
@@ -274,6 +288,30 @@ const RecordingOverlay: React.FC = () => {
                 true,
               )
             : listeningRow(open, true)}
+        </div>
+      </div>
+    );
+  }
+
+  // ---- Notice: one icon + one line, shown briefly after a quick-switch
+  // shortcut. Same pill and fade as the minimal overlay.
+  if (state === "notice") {
+    const Icon = notice && isTranslationNotice(notice) ? Languages : AudioLines;
+    return (
+      <div
+        dir={direction}
+        className={`ov-stage ${position} ov-fade ${isVisible ? "show" : ""}`}
+      >
+        <div className="scard compact">
+          <div className="sbase">
+            <div className="sbase-l">
+              <Icon className="snotice-icon" aria-hidden="true" />
+            </div>
+            <span className="swork-label">
+              {notice ? noticeLabel(t, notice) : ""}
+            </span>
+            <div className="sbase-r" />
+          </div>
         </div>
       </div>
     );

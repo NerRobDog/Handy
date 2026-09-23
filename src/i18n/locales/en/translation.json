@@ -703,7 +703,14 @@
   },
   "overlay": {
     "transcribing": "Transcribing...",
-    "processing": "Processing..."
+    "processing": "Processing...",
+    "notice": {
+      "translationOn": "Translation on",
+      "translationOff": "Translation off",
+      "modelNoTranslation": "{{model}} · doesn't translate",
+      "noTranslationModel": "No downloaded model can translate",
+      "switchFailed": "Couldn't switch to {{model}}"
+    }
   },
   "secureInput": {
     "blockedWithCulprit_one": "{{name}} may be blocking 1 shortcut",

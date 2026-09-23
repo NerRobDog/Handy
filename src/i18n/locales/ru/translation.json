@@ -700,7 +700,14 @@
   },
   "overlay": {
     "transcribing": "Расшифровка...",
-    "processing": "Обработка..."
+    "processing": "Обработка...",
+    "notice": {
+      "translationOn": "Перевод: вкл",
+      "translationOff": "Перевод: выкл",
+      "modelNoTranslation": "{{model}} · не переводит",
+      "noTranslationModel": "Нет скачанной модели с переводом",
+      "switchFailed": "Не удалось переключиться на {{model}}"
+    }
   },
   "whatsNew": {
     "title": "Новое в Handy v{{version}}"
