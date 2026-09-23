@@ -1802,7 +1802,10 @@ mod tests {
                 defaults.bindings["toggle_translation"].default_binding,
                 "ctrl+option+t"
             );
-            assert_eq!(defaults.bindings["cycle_model"].default_binding, "ctrl+option+m");
+            assert_eq!(
+                defaults.bindings["cycle_model"].default_binding,
+                "ctrl+option+m"
+            );
         }
     }
 }
