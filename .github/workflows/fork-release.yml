@@ -31,9 +31,12 @@ jobs:
       - name: Create draft release
         id: create-release
         uses: actions/github-script@v9
+        env:
+          APP_VERSION: ${{ steps.get-version.outputs.version }}
+          FORK_REVISION: ${{ inputs.fork-revision }}
         with:
           script: |
-            const tag = `v${{ steps.get-version.outputs.version }}-satoru.${{ inputs.fork-revision }}`
+            const tag = `v${process.env.APP_VERSION}-satoru.${process.env.FORK_REVISION}`
             const { data } = await github.rest.repos.createRelease({
               owner: context.repo.owner,
               repo: context.repo.repo,
@@ -56,6 +59,8 @@ jobs:
       target: "aarch64-apple-darwin"
       build-args: "--target aarch64-apple-darwin"
       release-id: ${{ needs.create-release.outputs.release-id }}
-      asset-prefix: "handy-satoru"
       sign-binaries: false
+      # Release builds compile clean, as upstream's release.yml does, so no
+      # stale cached native library ends up in a shipped bundle.
+      no-cache: true
     secrets: inherit
