@@ -24,28 +24,30 @@
 
 ## File Map
 
-| File | Change | Responsibility |
-|---|---|---|
-| `src-tauri/src/fork.rs` | create | `PRODUCT_NAME`, `updater_disabled_at_build()`, identity tests |
-| `src-tauri/src/lib.rs` | modify | `mod fork;`, window title |
-| `src-tauri/src/tray.rs` | modify | tooltip name |
-| `src-tauri/src/settings.rs` | modify | `update_checks_forced_disabled` honors the build switch |
-| `src-tauri/.cargo/config.toml` | create | `[env] HANDY_DISABLE_UPDATER = "1"` |
-| `src-tauri/tauri.conf.json` | modify | name, identifier, no updater artifacts |
-| `src/components/settings/about/AboutSettings.tsx` | modify | fork row |
-| `src/i18n/locales/*/translation.json` | modify | 3 strings × 26 locales |
-| `.github/workflows/fork-release.yml` | create | draft release, macOS arm64 |
-| `FORK.md` | create | what the fork is, how to install and update it |
+| File                                              | Change | Responsibility                                                |
+| ------------------------------------------------- | ------ | ------------------------------------------------------------- |
+| `src-tauri/src/fork.rs`                           | create | `PRODUCT_NAME`, `updater_disabled_at_build()`, identity tests |
+| `src-tauri/src/lib.rs`                            | modify | `mod fork;`, window title                                     |
+| `src-tauri/src/tray.rs`                           | modify | tooltip name                                                  |
+| `src-tauri/src/settings.rs`                       | modify | `update_checks_forced_disabled` honors the build switch       |
+| `src-tauri/.cargo/config.toml`                    | create | `[env] HANDY_DISABLE_UPDATER = "1"`                           |
+| `src-tauri/tauri.conf.json`                       | modify | name, identifier, no updater artifacts                        |
+| `src/components/settings/about/AboutSettings.tsx` | modify | fork row                                                      |
+| `src/i18n/locales/*/translation.json`             | modify | 3 strings × 26 locales                                        |
+| `.github/workflows/fork-release.yml`              | create | draft release, macOS arm64                                    |
+| `FORK.md`                                         | create | what the fork is, how to install and update it                |
 
 ---
 
 ### Task H1: Identity and build-time updater switch
 
 **Files:**
+
 - Create: `src-tauri/src/fork.rs`, `src-tauri/.cargo/config.toml`
 - Modify: `src-tauri/tauri.conf.json` (lines 3, 5, `bundle.createUpdaterArtifacts` at ~28), `src-tauri/src/lib.rs` (module list; `.title("Handy")` at ~945), `src-tauri/src/tray.rs` (`version_label` ~446), `src-tauri/src/settings.rs` (`update_checks_forced_disabled` ~1195)
 
 **Interfaces:**
+
 - Produces: `crate::fork::PRODUCT_NAME: &str`, `crate::fork::updater_disabled_at_build() -> bool`.
 
 - [ ] **Step 1: Write the failing tests** — create `src-tauri/src/fork.rs` with only:
@@ -172,6 +174,7 @@ Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>"
 ### Task H2: Fork row on the About page
 
 **Files:**
+
 - Modify: `src/components/settings/about/AboutSettings.tsx` (after the "Source Code" `SettingContainer`, ~66–78)
 - Modify: `src/i18n/locales/*/translation.json` (26 files, `settings.about.fork`)
 
@@ -205,19 +208,19 @@ For the other 24 locales translate `description` and `button` (keep `title` as `
 - [ ] **Step 3: Add the row** — in `AboutSettings.tsx`, right after the "Source Code" `SettingContainer`:
 
 ```tsx
-        <SettingContainer
-          title={t("settings.about.fork.title")}
-          description={t("settings.about.fork.description")}
-          grouped={true}
-        >
-          <Button
-            variant="secondary"
-            size="md"
-            onClick={() => openUrl("https://github.com/NerRobDog/Handy")}
-          >
-            {t("settings.about.fork.button")}
-          </Button>
-        </SettingContainer>
+<SettingContainer
+  title={t("settings.about.fork.title")}
+  description={t("settings.about.fork.description")}
+  grouped={true}
+>
+  <Button
+    variant="secondary"
+    size="md"
+    onClick={() => openUrl("https://github.com/NerRobDog/Handy")}
+  >
+    {t("settings.about.fork.button")}
+  </Button>
+</SettingContainer>
 ```
 
 - [ ] **Step 4: Verify**
@@ -242,6 +245,7 @@ Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>"
 ### Task H3: Draft-release workflow and FORK.md
 
 **Files:**
+
 - Create: `.github/workflows/fork-release.yml`, `FORK.md`
 
 - [ ] **Step 1: Write `fork-release.yml`**
