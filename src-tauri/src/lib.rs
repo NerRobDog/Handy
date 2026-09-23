@@ -8,6 +8,7 @@ mod catalog;
 pub mod cli;
 mod clipboard;
 mod commands;
+mod fork;
 mod helpers;
 mod input;
 mod llm_client;
@@ -876,11 +877,18 @@ pub fn run(cli_args: CliArgs) {
         }));
     }
 
+    // Fork builds disable the updater at compile time (HANDY_DISABLE_UPDATER):
+    // the plugin's registered endpoint and pubkey are upstream's, and would
+    // offer to overwrite Handy.satoru with plain Handy. Registering it at all
+    // is the belt to the frontend's isUpdateChecksLocked suspenders.
+    if !fork::updater_disabled_at_build() {
+        builder = builder.plugin(tauri_plugin_updater::Builder::new().build());
+    }
+
     #[allow(unused_mut)]
     let mut app = builder
         .plugin(tauri_plugin_fs::init())
         .plugin(tauri_plugin_process::init())
-        .plugin(tauri_plugin_updater::Builder::new().build())
         .plugin(tauri_plugin_os::init())
         .plugin(tauri_plugin_clipboard_manager::init())
         .plugin(tauri_plugin_macos_permissions::init())
@@ -948,7 +956,7 @@ pub fn run(cli_args: CliArgs) {
             // for portable mode (redirects WebView2 cache to portable Data dir)
             let mut win_builder =
                 tauri::WebviewWindowBuilder::new(app, "main", tauri::WebviewUrl::App("/".into()))
-                    .title("Handy")
+                    .title(fork::PRODUCT_NAME)
                     .inner_size(680.0, 570.0)
                     .min_inner_size(680.0, 570.0)
                     .resizable(true)

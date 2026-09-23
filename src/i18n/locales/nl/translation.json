@@ -648,6 +648,11 @@
           "description": "Krachtige tensorbibliotheek voor lokale AI-verwerking",
           "details": "Handy's lokale spraak-naar-tekst is gebouwd op transcribe.cpp en ggml. Met dank aan het geweldige werk van Georgi Gerganov en alle bijdragers."
         }
+      },
+      "fork": {
+        "title": "Handy.satoru",
+        "description": "Een fork van Handy van CJ Pais met snelle sneltoetsen voor model en vertaling",
+        "button": "Bekijk fork"
       }
     }
   },

@@ -648,6 +648,11 @@
       "whatsNewUpdates": {
         "label": "새 소식 표시",
         "description": "Handy 업데이트 후 릴리스 노트를 표시합니다"
+      },
+      "fork": {
+        "title": "Handy.satoru",
+        "description": "CJ Pais가 만든 Handy의 포크로, 모델 및 번역용 빠른 단축키를 제공합니다",
+        "button": "포크 보기"
       }
     }
   },

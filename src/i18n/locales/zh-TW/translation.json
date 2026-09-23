@@ -648,6 +648,11 @@
       "whatsNewUpdates": {
         "label": "顯示新功能",
         "description": "Handy 更新後顯示版本資訊"
+      },
+      "fork": {
+        "title": "Handy.satoru",
+        "description": "CJ Pais 開發的 Handy 的複刻版，提供模型與翻譯的快速快捷鍵",
+        "button": "檢視複刻版"
       }
     }
   },

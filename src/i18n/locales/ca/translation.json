@@ -648,6 +648,11 @@
           "description": "Biblioteca de tensors d'alt rendiment per a la inferència d'aprenentatge automàtic al dispositiu",
           "details": "La transcripció local de veu a text del Handy es basa en el transcribe.cpp i el ggml. Gràcies a la gran feina de Georgi Gerganov i dels col·laboradors."
         }
+      },
+      "fork": {
+        "title": "Handy.satoru",
+        "description": "Un fork de Handy de CJ Pais amb dreceres ràpides per al model i la traducció",
+        "button": "Mostra el fork"
       }
     }
   },

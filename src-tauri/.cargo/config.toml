@@ -1,0 +1,6 @@
+# Handy.satoru: build every binary with the self-updater off. Its endpoint
+# serves upstream Handy releases, which would overwrite the fork. `force =
+# true` so a HANDY_DISABLE_UPDATER=0 left in the developer's shell can't
+# re-enable the updater at compile time.
+[env]
+HANDY_DISABLE_UPDATER = { value = "1", force = true }

@@ -648,6 +648,11 @@
       "whatsNewUpdates": {
         "label": "Neuerungen anzeigen",
         "description": "Versionshinweise nach Handy-Updates anzeigen"
+      },
+      "fork": {
+        "title": "Handy.satoru",
+        "description": "Ein Fork von Handy von CJ Pais mit schnellen Tastenkürzeln für Modell und Übersetzung",
+        "button": "Fork ansehen"
       }
     }
   },
