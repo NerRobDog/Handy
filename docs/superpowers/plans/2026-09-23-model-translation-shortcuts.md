@@ -24,34 +24,36 @@
 
 ## File Map
 
-| File | Change | Responsibility |
-|---|---|---|
-| `src-tauri/src/settings.rs` | modify | new fields, two default bindings, tests |
-| `src-tauri/src/shortcut/mod.rs` | modify (tests only) | default bindings valid in both keyboard implementations |
-| `src-tauri/src/quick_switch.rs` | create | pure selection logic + app operations |
-| `src-tauri/src/overlay.rs` | modify | `OverlayNoticeEvent`, `show_notice_overlay` |
-| `src-tauri/src/tray.rs` | modify | `is_busy`, `invalidate_tray_menu`, translate check item |
-| `src-tauri/src/actions.rs` | modify | two actions in `ACTION_MAP` |
-| `src-tauri/src/commands/models.rs` | modify | translation-model memory hook, `toggle_favorite_model` |
-| `src-tauri/src/lib.rs` | modify | `mod quick_switch`, command + event registration, tray handler |
-| `src/bindings.ts` | regenerated | tauri-specta output |
-| `src/overlay/notice.ts`, `src/overlay/notice.test.ts` | create | notice text/icon selection + test |
-| `src/overlay/RecordingOverlay.tsx`, `.css` | modify | `notice` state |
-| `src/components/onboarding/ModelCard.tsx` | modify | star button |
-| `src/components/settings/models/ModelsSettings.tsx` | modify | favorites wiring |
-| `src/components/settings/general/GeneralSettings.tsx` | modify | two shortcut rows |
-| `src/i18n/locales/*/translation.json` | modify | new strings |
-| `package.json` | modify | `test:overlay` script |
+| File                                                  | Change              | Responsibility                                                 |
+| ----------------------------------------------------- | ------------------- | -------------------------------------------------------------- |
+| `src-tauri/src/settings.rs`                           | modify              | new fields, two default bindings, tests                        |
+| `src-tauri/src/shortcut/mod.rs`                       | modify (tests only) | default bindings valid in both keyboard implementations        |
+| `src-tauri/src/quick_switch.rs`                       | create              | pure selection logic + app operations                          |
+| `src-tauri/src/overlay.rs`                            | modify              | `OverlayNoticeEvent`, `show_notice_overlay`                    |
+| `src-tauri/src/tray.rs`                               | modify              | `is_busy`, `invalidate_tray_menu`, translate check item        |
+| `src-tauri/src/actions.rs`                            | modify              | two actions in `ACTION_MAP`                                    |
+| `src-tauri/src/commands/models.rs`                    | modify              | translation-model memory hook, `toggle_favorite_model`         |
+| `src-tauri/src/lib.rs`                                | modify              | `mod quick_switch`, command + event registration, tray handler |
+| `src/bindings.ts`                                     | regenerated         | tauri-specta output                                            |
+| `src/overlay/notice.ts`, `src/overlay/notice.test.ts` | create              | notice text/icon selection + test                              |
+| `src/overlay/RecordingOverlay.tsx`, `.css`            | modify              | `notice` state                                                 |
+| `src/components/onboarding/ModelCard.tsx`             | modify              | star button                                                    |
+| `src/components/settings/models/ModelsSettings.tsx`   | modify              | favorites wiring                                               |
+| `src/components/settings/general/GeneralSettings.tsx` | modify              | two shortcut rows                                              |
+| `src/i18n/locales/*/translation.json`                 | modify              | new strings                                                    |
+| `package.json`                                        | modify              | `test:overlay` script                                          |
 
 ---
 
 ### Task 1: Settings fields and default bindings
 
 **Files:**
+
 - Modify: `src-tauri/src/settings.rs` (struct `AppSettings` at ~364, `get_default_settings` at ~858, tests module at ~1241)
 - Test: `src-tauri/src/settings.rs` tests, `src-tauri/src/shortcut/mod.rs` tests (~1407)
 
 **Interfaces:**
+
 - Produces: `AppSettings.favorite_models: Vec<String>`, `AppSettings.translation_model: Option<String>`, `AppSettings.translation_return_model: Option<String>`; default bindings `toggle_translation`, `cycle_model`.
 
 - [ ] **Step 1: Write the failing tests** — append to `mod tests` in `settings.rs`:
@@ -194,10 +196,12 @@ Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>"
 ### Task 2: Pure quick-switch selection logic
 
 **Files:**
+
 - Create: `src-tauri/src/quick_switch.rs`
 - Modify: `src-tauri/src/lib.rs` (module list, lines 1–26: add `mod quick_switch;` after `mod paste_tx;`)
 
 **Interfaces:**
+
 - Produces (all in `crate::quick_switch`):
   - `pub struct ModelCandidate { pub id: String, pub name: String, pub supports_translation: bool }` (`Clone, Debug, PartialEq, Eq`)
   - `pub fn cycle_list(downloaded: &[ModelCandidate], favorites: &[String]) -> Vec<ModelCandidate>`
@@ -478,10 +482,12 @@ Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>"
 ### Task 3: Overlay notice (backend)
 
 **Files:**
+
 - Modify: `src-tauri/src/overlay.rs` (imports lines 1–6, `overlay_dimensions` ~57, new fn after `show_processing_overlay` ~629, tests module ~770)
 - Modify: `src-tauri/src/lib.rs` (`collect_events!` ~768)
 
 **Interfaces:**
+
 - Produces: `crate::overlay::OverlayNoticeKind` (enum, snake_case serde), `crate::overlay::OverlayNoticeEvent { pub kind: OverlayNoticeKind, pub model: Option<String> }` (tauri-specta event, frontend `events.overlayNoticeEvent`), `pub fn show_notice_overlay(app_handle: &AppHandle, notice: OverlayNoticeEvent)`.
 
 - [ ] **Step 1: Write the failing tests** — append inside the existing `mod tests` in `overlay.rs`:
@@ -605,10 +611,12 @@ Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>"
 ### Task 4: Tray busy predicate and translation check item
 
 **Files:**
+
 - Modify: `src-tauri/src/tray.rs` (`MenuInputs` ~57, `set_tray_state` area ~218, `compute_desired` ~312, `build_menu` idle branch ~533–570, tests ~670)
 - Modify: `src/i18n/locales/en/translation.json`, `src/i18n/locales/ru/translation.json` (`tray` section)
 
 **Interfaces:**
+
 - Produces: `pub fn tray::is_busy(app: &AppHandle) -> bool`, `pub fn tray::invalidate_tray_menu(app: &AppHandle)`, tray menu item id `"toggle_translation"`, tray string field `strings.translate_to_english` (generated by `build.rs` from key `tray.translateToEnglish`).
 
 - [ ] **Step 1: Write the failing test** — in `tray.rs` tests, add `translate_to_english: false,` to the `inputs()` helper literal and append:
@@ -651,7 +659,7 @@ pub fn invalidate_tray_menu(app: &AppHandle) {
 }
 ```
 
-  5. `build_menu`, idle branch: after `unload_model_i` add
+5. `build_menu`, idle branch: after `unload_model_i` add
 
 ```rust
         let translate_i = CheckMenuItem::with_id(
@@ -664,7 +672,7 @@ pub fn invalidate_tray_menu(app: &AppHandle) {
         )?;
 ```
 
-  and insert `&translate_i,` into that branch's `Menu::with_items` right after `&unload_model_i,`.
+and insert `&translate_i,` into that branch's `Menu::with_items` right after `&unload_model_i,`.
 
 - [ ] **Step 4: Run tests to verify they pass**
 
@@ -689,6 +697,7 @@ Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>"
 ### Task 5: Wire quick switching into the app
 
 **Files:**
+
 - Modify: `src-tauri/src/quick_switch.rs` (app operations)
 - Modify: `src-tauri/src/commands/models.rs` (`switch_active_model` ~95–159, new command)
 - Modify: `src-tauri/src/actions.rs` (actions before `ACTION_MAP` ~930, tests)
@@ -696,6 +705,7 @@ Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>"
 - Regenerate: `src/bindings.ts`
 
 **Interfaces:**
+
 - Consumes: Task 2 functions, `overlay::show_notice_overlay`/`OverlayNoticeEvent`/`OverlayNoticeKind` (Task 3), `tray::is_busy`/`invalidate_tray_menu`/`update_tray_menu` (Task 4), `commands::models::switch_active_model(app: &AppHandle, model_id: &str) -> Result<(), String>`.
 - Produces: `pub fn quick_switch::cycle_model(app: &AppHandle)`, `pub fn quick_switch::toggle_translation_mode(app: &AppHandle)`, `pub fn quick_switch::remember_translation_model(settings: &mut AppSettings, model: &ModelCandidate) -> bool`, Tauri command `toggle_favorite_model(model_id: String) -> Result<Vec<String>, String>` (frontend `commands.toggleFavoriteModel`).
 
@@ -753,7 +763,7 @@ use std::sync::Arc;
 use tauri::{AppHandle, Emitter, Manager};
 ```
 
-  and after `toggle_favorite` add:
+and after `toggle_favorite` add:
 
 ```rust
 /// Records `model` as the translation model when translation is on and the
@@ -908,7 +918,7 @@ fn disable_translation(app: &AppHandle) {
 }
 ```
 
-  3b. In `commands/models.rs`, rename the existing `pub fn switch_active_model` to `fn switch_active_model_inner` (body unchanged) and add above it:
+3b. In `commands/models.rs`, rename the existing `pub fn switch_active_model` to `fn switch_active_model_inner` (body unchanged) and add above it:
 
 ```rust
 /// Validates the model, updates the persisted setting, and loads the model
@@ -932,9 +942,9 @@ pub fn switch_active_model(app: &AppHandle, model_id: &str) -> Result<(), String
 }
 ```
 
-  (Move the existing doc comment from the old function onto this wrapper; keep a one-line `/// Does the actual switch; see [`switch_active_model`].` on the inner fn.)
+(Move the existing doc comment from the old function onto this wrapper; keep a one-line `/// Does the actual switch; see [`switch_active_model`].` on the inner fn.)
 
-  and at the end of the file:
+and at the end of the file:
 
 ```rust
 /// Stars or unstars a model for the next-model shortcut. Returns the
@@ -954,7 +964,7 @@ pub fn toggle_favorite_model(app_handle: AppHandle, model_id: String) -> Result<
 }
 ```
 
-  3c. In `actions.rs`, before `// Static Action Map`:
+3c. In `actions.rs`, before `// Static Action Map`:
 
 ```rust
 // Toggle Translation Action
@@ -984,7 +994,7 @@ impl ShortcutAction for CycleModelAction {
 }
 ```
 
-  and inside `ACTION_MAP` before `"test"`:
+and inside `ACTION_MAP` before `"test"`:
 
 ```rust
     map.insert(
@@ -997,7 +1007,7 @@ impl ShortcutAction for CycleModelAction {
     );
 ```
 
-  3d. In `lib.rs` `on_menu_event`, before `id if id.starts_with("model_select:")`:
+3d. In `lib.rs` `on_menu_event`, before `id if id.starts_with("model_select:")`:
 
 ```rust
             "toggle_translation" => {
@@ -1005,7 +1015,7 @@ impl ShortcutAction for CycleModelAction {
             }
 ```
 
-  and in `collect_commands![...]` after `commands::models::set_active_model,` add `commands::models::toggle_favorite_model,`.
+and in `collect_commands![...]` after `commands::models::set_active_model,` add `commands::models::toggle_favorite_model,`.
 
 - [ ] **Step 4: Run tests to verify they pass**
 
@@ -1044,11 +1054,13 @@ Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>"
 ### Task 6: Overlay notice (frontend)
 
 **Files:**
+
 - Create: `src/overlay/notice.ts`, `src/overlay/notice.test.ts`
 - Modify: `src/overlay/RecordingOverlay.tsx`, `src/overlay/RecordingOverlay.css`, `package.json` (scripts)
 - Modify: `src/i18n/locales/en/translation.json`, `src/i18n/locales/ru/translation.json` (`overlay` section)
 
 **Interfaces:**
+
 - Consumes: `OverlayNoticeEvent`, `events.overlayNoticeEvent` from `@/bindings` (Task 5 regeneration).
 - Produces: `noticeLabel(t, notice): string`, `isTranslationNotice(notice): boolean`.
 
@@ -1165,46 +1177,46 @@ Strings — `en` `"overlay"` section add:
 ```
 
 `RecordingOverlay.tsx`:
-  - imports: add `import { AudioLines, Languages } from "lucide-react";`, `import type { OverlayNoticeEvent } from "@/bindings";` (merge into the existing type import), `import { isTranslationNotice, noticeLabel } from "./notice";`
-  - `type OverlayState = "recording" | "streaming" | "transcribing" | "processing" | "notice";`
-  - state: `const [notice, setNotice] = useState<OverlayNoticeEvent | null>(null);`
-  - in `setupEventListeners`, after `unlistenPhase`:
+
+- imports: add `import { AudioLines, Languages } from "lucide-react";`, `import type { OverlayNoticeEvent } from "@/bindings";` (merge into the existing type import), `import { isTranslationNotice, noticeLabel } from "./notice";`
+- `type OverlayState = "recording" | "streaming" | "transcribing" | "processing" | "notice";`
+- state: `const [notice, setNotice] = useState<OverlayNoticeEvent | null>(null);`
+- in `setupEventListeners`, after `unlistenPhase`:
 
 ```tsx
-      const unlistenNotice = await events.overlayNoticeEvent.listen(
-        (event) => {
-          setNotice(event.payload);
-        },
-      );
+const unlistenNotice = await events.overlayNoticeEvent.listen((event) => {
+  setNotice(event.payload);
+});
 ```
 
     and call `unlistenNotice();` in the returned cleanup.
-  - before the `// ---- Minimal overlay` block:
+
+- before the `// ---- Minimal overlay` block:
 
 ```tsx
-  // ---- Notice: one icon + one line, shown briefly after a quick-switch
-  // shortcut. Same pill and fade as the minimal overlay.
-  if (state === "notice") {
-    const Icon = notice && isTranslationNotice(notice) ? Languages : AudioLines;
-    return (
-      <div
-        dir={direction}
-        className={`ov-stage ${position} ov-fade ${isVisible ? "show" : ""}`}
-      >
-        <div className="scard compact">
-          <div className="sbase">
-            <div className="sbase-l">
-              <Icon className="snotice-icon" aria-hidden="true" />
-            </div>
-            <span className="swork-label">
-              {notice ? noticeLabel(t, notice) : ""}
-            </span>
-            <div className="sbase-r" />
+// ---- Notice: one icon + one line, shown briefly after a quick-switch
+// shortcut. Same pill and fade as the minimal overlay.
+if (state === "notice") {
+  const Icon = notice && isTranslationNotice(notice) ? Languages : AudioLines;
+  return (
+    <div
+      dir={direction}
+      className={`ov-stage ${position} ov-fade ${isVisible ? "show" : ""}`}
+    >
+      <div className="scard compact">
+        <div className="sbase">
+          <div className="sbase-l">
+            <Icon className="snotice-icon" aria-hidden="true" />
           </div>
+          <span className="swork-label">
+            {notice ? noticeLabel(t, notice) : ""}
+          </span>
+          <div className="sbase-r" />
         </div>
       </div>
-    );
-  }
+    </div>
+  );
+}
 ```
 
 `RecordingOverlay.css` — after `.swork-label { ... }`:
@@ -1239,12 +1251,14 @@ Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>"
 ### Task 7: Star button and shortcut rows
 
 **Files:**
+
 - Modify: `src/components/onboarding/ModelCard.tsx` (props ~6–34, handlers ~140, bottom row ~277)
 - Modify: `src/components/settings/models/ModelsSettings.tsx` (imports, component body, downloaded `ModelCard` at ~410)
 - Modify: `src/components/settings/general/GeneralSettings.tsx`
 - Modify: `src/i18n/locales/en/translation.json`, `src/i18n/locales/ru/translation.json`
 
 **Interfaces:**
+
 - Consumes: `commands.toggleFavoriteModel(modelId)`, `Settings.favorite_models` (Task 5 bindings).
 - Produces: `ModelCard` props `favoriteRank?: number | null`, `onToggleFavorite?: (modelId: string) => void`.
 
@@ -1268,47 +1282,48 @@ Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>"
   onToggleFavorite?: (modelId: string) => void;
 ```
 
-  - destructure `favoriteRank = null, onToggleFavorite,` in the component params;
-  - next to `handleDelete`:
+- destructure `favoriteRank = null, onToggleFavorite,` in the component params;
+- next to `handleDelete`:
 
 ```tsx
-  const handleToggleFavorite = (e: React.MouseEvent) => {
-    e.stopPropagation();
-    onToggleFavorite?.(model.id);
-  };
-  const isFavorite = favoriteRank !== null;
+const handleToggleFavorite = (e: React.MouseEvent) => {
+  e.stopPropagation();
+  onToggleFavorite?.(model.id);
+};
+const isFavorite = favoriteRank !== null;
 ```
 
-  - in the bottom row, immediately before the delete `Button`:
+- in the bottom row, immediately before the delete `Button`:
 
 ```tsx
-        {onToggleFavorite &&
-          (status === "available" || status === "active") && (
-            <Button
-              variant="ghost"
-              size="sm"
-              onClick={handleToggleFavorite}
-              aria-pressed={isFavorite}
-              title={
-                isFavorite
-                  ? t("modelSelector.favorite.remove")
-                  : t("modelSelector.favorite.add")
-              }
-              className={`flex items-center gap-1 ${showModelSize ? "" : "ms-auto"} ${
-                isFavorite
-                  ? "text-logo-primary"
-                  : "text-text/50 hover:text-logo-primary"
-              } hover:bg-logo-primary/10`}
-            >
-              <Star
-                className="w-3.5 h-3.5"
-                fill={isFavorite ? "currentColor" : "none"}
-              />
-              {isFavorite && (
-                <span className="text-xs tabular-nums">{favoriteRank}</span>
-              )}
-            </Button>
-          )}
+{
+  onToggleFavorite && (status === "available" || status === "active") && (
+    <Button
+      variant="ghost"
+      size="sm"
+      onClick={handleToggleFavorite}
+      aria-pressed={isFavorite}
+      title={
+        isFavorite
+          ? t("modelSelector.favorite.remove")
+          : t("modelSelector.favorite.add")
+      }
+      className={`flex items-center gap-1 ${showModelSize ? "" : "ms-auto"} ${
+        isFavorite
+          ? "text-logo-primary"
+          : "text-text/50 hover:text-logo-primary"
+      } hover:bg-logo-primary/10`}
+    >
+      <Star
+        className="w-3.5 h-3.5"
+        fill={isFavorite ? "currentColor" : "none"}
+      />
+      {isFavorite && (
+        <span className="text-xs tabular-nums">{favoriteRank}</span>
+      )}
+    </Button>
+  );
+}
 ```
 
 - [ ] **Step 3: `ModelsSettings.tsx`**
@@ -1317,27 +1332,26 @@ Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>"
   - in the component, after `useModelStore()`:
 
 ```tsx
-  const favoriteModels =
-    useSettingsStore((state) => state.settings?.favorite_models) ??
-    NO_FAVORITES;
-  const refreshSettings = useSettingsStore((state) => state.refreshSettings);
+const favoriteModels =
+  useSettingsStore((state) => state.settings?.favorite_models) ?? NO_FAVORITES;
+const refreshSettings = useSettingsStore((state) => state.refreshSettings);
 
-  const favoriteRank = (modelId: string): number | null => {
-    const index = favoriteModels.indexOf(modelId);
-    return index === -1 ? null : index + 1;
-  };
+const favoriteRank = (modelId: string): number | null => {
+  const index = favoriteModels.indexOf(modelId);
+  return index === -1 ? null : index + 1;
+};
 
-  const handleToggleFavorite = async (modelId: string) => {
-    const result = await commands.toggleFavoriteModel(modelId);
-    if (result.status === "error") {
-      console.error(`Failed to toggle favorite for ${modelId}:`, result.error);
-      return;
-    }
-    await refreshSettings();
-  };
+const handleToggleFavorite = async (modelId: string) => {
+  const result = await commands.toggleFavoriteModel(modelId);
+  if (result.status === "error") {
+    console.error(`Failed to toggle favorite for ${modelId}:`, result.error);
+    return;
+  }
+  await refreshSettings();
+};
 ```
 
-  - on the downloaded-models `ModelCard` (the one with `showRecommended={false}` at ~410) add `favoriteRank={favoriteRank(model.id)}` and `onToggleFavorite={handleToggleFavorite}`. Do not add them to the available-models list.
+- on the downloaded-models `ModelCard` (the one with `showRecommended={false}` at ~410) add `favoriteRank={favoriteRank(model.id)}` and `onToggleFavorite={handleToggleFavorite}`. Do not add them to the available-models list.
 
 - [ ] **Step 4: `GeneralSettings.tsx`** — after the cancel row:
 
@@ -1369,6 +1383,7 @@ Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>"
 ### Task 8: Translations for the remaining 24 locales
 
 **Files:**
+
 - Modify: `src/i18n/locales/{ar,bg,ca,cs,da,de,es,fr,he,hi,id,it,ja,ko,ne,nl,pl,pt,sv,tr,uk,vi,zh,zh-TW}/translation.json`
 
 New keys (source = `en`, already added in Tasks 4, 6, 7): `tray.translateToEnglish`, `overlay.notice.{translationOn,translationOff,modelNoTranslation,noTranslationModel,switchFailed}`, `settings.general.shortcut.bindings.toggle_translation.{name,description}`, `settings.general.shortcut.bindings.cycle_model.{name,description}`, `modelSelector.favorite.{add,remove}` — 13 strings per locale.
