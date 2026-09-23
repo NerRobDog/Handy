@@ -401,6 +401,17 @@ pub struct AppSettings {
     pub whats_new_last_seen_version: String,
     #[serde(default = "default_model")]
     pub selected_model: String,
+    /// Model ids starred for the next-model shortcut, in the order they were
+    /// starred. Ids that are not downloaded are skipped when cycling.
+    #[serde(default)]
+    pub favorite_models: Vec<String>,
+    /// Last model that ran with translation on; the translation shortcut
+    /// switches back to it when translation is turned on again.
+    #[serde(default)]
+    pub translation_model: Option<String>,
+    /// Model to restore when the translation shortcut turns translation off.
+    #[serde(default)]
+    pub translation_return_model: Option<String>,
     #[serde(default)]
     pub onboarding_completed: bool,
     #[serde(default = "default_always_on_microphone")]
@@ -907,6 +918,36 @@ pub fn get_default_settings() -> AppSettings {
         },
     );
 
+    #[cfg(target_os = "macos")]
+    let (default_translation_shortcut, default_cycle_model_shortcut) =
+        ("ctrl+option+t", "ctrl+option+m");
+    // Ctrl+Alt+T opens a terminal on Ubuntu, so other platforms add Shift.
+    #[cfg(not(target_os = "macos"))]
+    let (default_translation_shortcut, default_cycle_model_shortcut) =
+        ("ctrl+alt+shift+t", "ctrl+alt+shift+m");
+
+    bindings.insert(
+        "toggle_translation".to_string(),
+        ShortcutBinding {
+            id: "toggle_translation".to_string(),
+            name: "Toggle Translation".to_string(),
+            description: "Turns translation to English on or off, switching to the last translation model and back."
+                .to_string(),
+            default_binding: default_translation_shortcut.to_string(),
+            current_binding: default_translation_shortcut.to_string(),
+        },
+    );
+    bindings.insert(
+        "cycle_model".to_string(),
+        ShortcutBinding {
+            id: "cycle_model".to_string(),
+            name: "Next Model".to_string(),
+            description: "Switches to the next starred transcription model.".to_string(),
+            default_binding: default_cycle_model_shortcut.to_string(),
+            current_binding: default_cycle_model_shortcut.to_string(),
+        },
+    );
+
     AppSettings {
         settings_schema_version: default_settings_schema_version(),
         bindings,
@@ -921,6 +962,9 @@ pub fn get_default_settings() -> AppSettings {
         show_whats_new_on_update: default_show_whats_new_on_update(),
         whats_new_last_seen_version: default_whats_new_last_seen_version(),
         selected_model: "".to_string(),
+        favorite_models: Vec::new(),
+        translation_model: None,
+        translation_return_model: None,
         onboarding_completed: false,
         always_on_microphone: false,
         selected_microphone: None,
@@ -1730,5 +1774,35 @@ mod tests {
         let out = format!("{:?}", map);
         assert!(!out.contains("secret"));
         assert!(out.contains("[REDACTED]"));
+    }
+
+    #[test]
+    fn quick_switch_fields_default_when_missing() {
+        let settings: AppSettings = serde_json::from_value(serde_json::json!({}))
+            .expect("all AppSettings fields need serde defaults");
+        assert!(settings.favorite_models.is_empty());
+        assert_eq!(settings.translation_model, None);
+        assert_eq!(settings.translation_return_model, None);
+    }
+
+    #[test]
+    fn default_bindings_include_quick_switch_shortcuts() {
+        let defaults = get_default_settings();
+        for id in ["toggle_translation", "cycle_model"] {
+            let binding = defaults
+                .bindings
+                .get(id)
+                .unwrap_or_else(|| panic!("missing default binding '{id}'"));
+            assert_eq!(binding.id, id);
+            assert_eq!(binding.current_binding, binding.default_binding);
+        }
+        #[cfg(target_os = "macos")]
+        {
+            assert_eq!(
+                defaults.bindings["toggle_translation"].default_binding,
+                "ctrl+option+t"
+            );
+            assert_eq!(defaults.bindings["cycle_model"].default_binding, "ctrl+option+m");
+        }
     }
 }

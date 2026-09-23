@@ -1423,4 +1423,20 @@ mod tests {
             assert!(key.parse::<Hotkey>().is_ok(), "HandyKeys rejected {key}");
         }
     }
+
+    #[test]
+    fn every_default_binding_is_valid_for_both_implementations() {
+        use crate::settings::{get_default_settings, KeyboardImplementation};
+        for (id, binding) in get_default_settings().bindings {
+            for implementation in [KeyboardImplementation::Tauri, KeyboardImplementation::HandyKeys] {
+                super::validate_shortcut_for_implementation(&binding.default_binding, implementation)
+                    .unwrap_or_else(|e| {
+                        panic!(
+                            "default binding '{id}' ({}) invalid for {implementation:?}: {e}",
+                            binding.default_binding
+                        )
+                    });
+            }
+        }
+    }
 }
