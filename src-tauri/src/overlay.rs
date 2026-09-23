@@ -658,13 +658,18 @@ const NOTICE_VISIBLE_MS: u64 = 1500;
 
 /// Shows `notice` in the overlay for a moment, then hides it — unless a newer
 /// overlay session (e.g. a recording) took over in the meantime. Respects the
-/// overlay being turned off.
+/// overlay being turned off. The notice is dropped entirely (never shown) if
+/// Handy is busy recording or transcribing when it would appear, so it can
+/// never replace or hide a live recording overlay.
 pub fn show_notice_overlay(app_handle: &AppHandle, notice: OverlayNoticeEvent) {
     if settings::get_settings(app_handle).overlay_style == OverlayStyle::None {
         return;
     }
     let handle = app_handle.clone();
     let _ = app_handle.run_on_main_thread(move || {
+        if crate::tray::is_busy(&handle) {
+            return;
+        }
         // Payload first, so the overlay has the text when "show-overlay" lands.
         let _ = notice.emit_to(&handle, "recording_overlay");
         show_overlay_state_on_main(&handle, "notice");
