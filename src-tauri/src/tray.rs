@@ -469,6 +469,16 @@ fn version_label() -> String {
     }
 }
 
+/// Returns the localized string, or the English equivalent if the localized
+/// version is empty (build.rs emits "" for missing keys).
+fn fallback_if_empty(localized: &str, english: &str) -> String {
+    if localized.is_empty() {
+        english.to_string()
+    } else {
+        localized.to_string()
+    }
+}
+
 /// Builds the tray menu and tooltip for the given inputs. Pure with respect
 /// to app state: everything it depends on is in `inputs`, plus the
 /// process-constant `HANDY_DISABLE_UPDATER` env flag behind
@@ -481,11 +491,11 @@ fn build_menu(app: &AppHandle, inputs: &MenuInputs) -> tauri::Result<(Menu<tauri
     // haven't translated the key yet get the English string rather than a
     // blank menu item (build.rs emits "" for missing keys).
     let secure_input_warning = if inputs.warning {
-        let label = if strings.secure_input_warning.is_empty() {
-            get_tray_translations(Some("en".to_string())).secure_input_warning
-        } else {
-            strings.secure_input_warning.clone()
-        };
+        let english_strings = get_tray_translations(Some("en".to_string()));
+        let label = fallback_if_empty(
+            &strings.secure_input_warning,
+            &english_strings.secure_input_warning,
+        );
         Some(MenuItem::with_id(
             app,
             "secure_input_warning",
@@ -572,10 +582,16 @@ fn build_menu(app: &AppHandle, inputs: &MenuInputs) -> tauri::Result<(Menu<tauri
             None::<&str>,
         )?;
 
+        // Translation item: locales without a translation get the English string.
+        let english_strings = get_tray_translations(Some("en".to_string()));
+        let translate_label = fallback_if_empty(
+            &strings.translate_to_english,
+            &english_strings.translate_to_english,
+        );
         let translate_i = CheckMenuItem::with_id(
             app,
             "toggle_translation",
-            &strings.translate_to_english,
+            &translate_label,
             true,
             inputs.translate_to_english,
             None::<&str>,
@@ -696,7 +712,10 @@ pub fn copy_last_transcript(app: &AppHandle) {
 
 #[cfg(test)]
 mod tests {
-    use super::{last_transcript_text, load_tray_icon, MenuInputs, TrayDesired, TrayIconState};
+    use super::{
+        fallback_if_empty, last_transcript_text, load_tray_icon, MenuInputs, TrayDesired,
+        TrayIconState,
+    };
     use crate::managers::history::HistoryEntry;
 
     fn build_entry(transcription: &str, post_processed: Option<&str>) -> HistoryEntry {
@@ -776,5 +795,15 @@ mod tests {
         let mut translating = inputs(false);
         translating.translate_to_english = true;
         assert_ne!(inputs(false), translating);
+    }
+
+    #[test]
+    fn fallback_if_empty_returns_english_when_localized_is_empty() {
+        assert_eq!(fallback_if_empty("", "English"), "English");
+    }
+
+    #[test]
+    fn fallback_if_empty_returns_localized_when_not_empty() {
+        assert_eq!(fallback_if_empty("Français", "English"), "Français");
     }
 }
