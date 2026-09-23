@@ -28,8 +28,10 @@ fn sorted_by_name(models: &[ModelCandidate]) -> Vec<ModelCandidate> {
 /// the order they were starred, or every downloaded model by name (the tray
 /// order) when fewer than two favorites are downloaded.
 pub fn cycle_list(downloaded: &[ModelCandidate], favorites: &[String]) -> Vec<ModelCandidate> {
+    let mut seen = std::collections::HashSet::new();
     let starred: Vec<ModelCandidate> = favorites
         .iter()
+        .filter(|id| seen.insert(id.as_str()))
         .filter_map(|id| downloaded.iter().find(|m| &m.id == id).cloned())
         .collect();
     if starred.len() >= 2 {
@@ -191,13 +193,17 @@ pub fn cycle_model(app: &AppHandle) {
 
 /// Translation shortcut and tray item: turn translation mode on or off.
 pub fn toggle_translation_mode(app: &AppHandle) {
-    if tray::is_busy(app) {
-        info!("Ignoring translation shortcut while recording or transcribing.");
-        tray::invalidate_tray_menu(app);
-        return;
-    }
     let app = app.clone();
+    // The busy check and the tray rebuild it can trigger both run here, off
+    // the caller's thread: a tray click lands on the main thread, and the
+    // rebuild path reaches `is_model_loaded` -> the engine lock, which must
+    // never be taken on the main thread (see tray.rs's `sync_tray` doc, #1716).
     std::thread::spawn(move || {
+        if tray::is_busy(&app) {
+            info!("Ignoring translation shortcut while recording or transcribing.");
+            tray::invalidate_tray_menu(&app);
+            return;
+        }
         if get_settings(&app).translate_to_english {
             disable_translation(&app);
         } else {
@@ -261,6 +267,12 @@ fn disable_translation(app: &AppHandle) {
                     "Translation shortcut: returning to {} failed: {}",
                     target.id, e
                 );
+                // The switch back failed — put the return model back so a
+                // retry (or the next toggle-off) still knows where to go,
+                // instead of silently losing it.
+                let mut settings = get_settings(app);
+                settings.translation_return_model = return_model;
+                write_settings(app, settings);
                 notify(app, OverlayNoticeKind::SwitchFailed, Some(&target));
                 return;
             }
@@ -309,6 +321,20 @@ mod tests {
     fn cycle_list_skips_favorites_that_are_not_downloaded() {
         let list = cycle_list(&downloaded(), &favs(&["gone", "turbo", "parakeet"]));
         assert_eq!(ids(&list), ["turbo", "parakeet"]);
+    }
+
+    #[test]
+    fn cycle_list_dedupes_favorites_preserving_first_occurrence() {
+        let list = cycle_list(&downloaded(), &favs(&["large", "large", "parakeet"]));
+        assert_eq!(ids(&list), ["large", "parakeet"]);
+        assert_eq!(
+            next_in_cycle(&list, "large").map(|m| m.id.as_str()),
+            Some("parakeet")
+        );
+        assert_eq!(
+            next_in_cycle(&list, "parakeet").map(|m| m.id.as_str()),
+            Some("large")
+        );
     }
 
     #[test]
