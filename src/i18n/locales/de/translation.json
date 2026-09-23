@@ -7,7 +7,8 @@
     "model": "Modell",
     "quit": "Beenden",
     "cancel": "Abbrechen",
-    "secureInputWarning": "⚠ Tastenkürzel durch Secure Input blockiert"
+    "secureInputWarning": "⚠ Tastenkürzel durch Secure Input blockiert",
+    "translateToEnglish": "Ins Englische übersetzen"
   },
   "sidebar": {
     "general": "Allgemein",
@@ -152,7 +153,11 @@
     },
     "cancel": "Abbrechen",
     "cancelDownload": "Download abbrechen",
-    "legacy": "Veraltet"
+    "legacy": "Veraltet",
+    "favorite": {
+      "add": "Mit einem Stern für das Tastenkürzel „Nächstes Modell“ markieren",
+      "remove": "Stern entfernen"
+    }
   },
   "settings": {
     "modelSettings": {
@@ -199,6 +204,14 @@
           "transcribe_with_post_process": {
             "name": "Nachbearbeitungs-Tastenkürzel",
             "description": "Optional: Ein dediziertes Tastenkürzel, das immer die KI-Nachbearbeitung auf deine Transkription anwendet."
+          },
+          "toggle_translation": {
+            "name": "Übersetzungs-Tastenkürzel",
+            "description": "Schaltet die Übersetzung ins Englische ein oder aus. Wechselt zum zuletzt für die Übersetzung verwendeten Modell und beim Ausschalten wieder zurück."
+          },
+          "cycle_model": {
+            "name": "Tastenkürzel für das nächste Modell",
+            "description": "Wechselt zum nächsten mit Stern markierten Modell. Sind weniger als zwei mit Stern markiert, werden alle heruntergeladenen Modelle durchlaufen."
           }
         },
         "errors": {
@@ -699,7 +712,14 @@
   },
   "overlay": {
     "transcribing": "Transkribiere...",
-    "processing": "Verarbeite..."
+    "processing": "Verarbeite...",
+    "notice": {
+      "translationOn": "Übersetzung ein",
+      "translationOff": "Übersetzung aus",
+      "modelNoTranslation": "{{model}} · übersetzt nicht",
+      "noTranslationModel": "Kein heruntergeladenes Modell kann übersetzen",
+      "switchFailed": "Wechsel zu {{model}} fehlgeschlagen"
+    }
   },
   "whatsNew": {
     "title": "Neu in Handy v{{version}}"

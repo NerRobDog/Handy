@@ -7,7 +7,8 @@
     "model": "Modelo",
     "quit": "Salir",
     "cancel": "Cancelar",
-    "secureInputWarning": "⚠ Atajos bloqueados por Secure Input"
+    "secureInputWarning": "⚠ Atajos bloqueados por Secure Input",
+    "translateToEnglish": "Traducir al inglés"
   },
   "sidebar": {
     "general": "General",
@@ -152,7 +153,11 @@
     },
     "cancel": "Cancelar",
     "cancelDownload": "Cancelar descarga",
-    "legacy": "Heredado"
+    "legacy": "Heredado",
+    "favorite": {
+      "add": "Marcar con estrella para el atajo del siguiente modelo",
+      "remove": "Quitar estrella"
+    }
   },
   "settings": {
     "modelSettings": {
@@ -199,6 +204,14 @@
           "transcribe_with_post_process": {
             "name": "Tecla de post procesamiento",
             "description": "Opcional: Una tecla de acceso rápido dedicada que siempre aplica post procesamiento con IA a tu transcripción."
+          },
+          "toggle_translation": {
+            "name": "Atajo de traducción",
+            "description": "Activa o desactiva la traducción al inglés. Cambia al último modelo usado para traducir y vuelve al anterior al desactivarla."
+          },
+          "cycle_model": {
+            "name": "Atajo del siguiente modelo",
+            "description": "Cambia al siguiente modelo marcado con estrella. Con menos de dos marcados, recorre todos los modelos descargados."
           }
         },
         "errors": {
@@ -699,7 +712,14 @@
   },
   "overlay": {
     "transcribing": "Transcribiendo...",
-    "processing": "Procesando..."
+    "processing": "Procesando...",
+    "notice": {
+      "translationOn": "Traducción activada",
+      "translationOff": "Traducción desactivada",
+      "modelNoTranslation": "{{model}} · no traduce",
+      "noTranslationModel": "Ningún modelo descargado puede traducir",
+      "switchFailed": "No se pudo cambiar a {{model}}"
+    }
   },
   "whatsNew": {
     "title": "Nuevo en Handy v{{version}}"

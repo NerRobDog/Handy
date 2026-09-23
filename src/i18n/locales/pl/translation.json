@@ -7,7 +7,8 @@
     "model": "Model",
     "quit": "Zamknij",
     "cancel": "Anuluj",
-    "secureInputWarning": "⚠ Skróty zablokowane przez Secure Input"
+    "secureInputWarning": "⚠ Skróty zablokowane przez Secure Input",
+    "translateToEnglish": "Tłumacz na angielski"
   },
   "sidebar": {
     "general": "Ogólne",
@@ -152,7 +153,11 @@
     },
     "cancel": "Anuluj",
     "cancelDownload": "Anuluj pobieranie",
-    "legacy": "Przestarzałe"
+    "legacy": "Przestarzałe",
+    "favorite": {
+      "add": "Oznacz gwiazdką dla skrótu następnego modelu",
+      "remove": "Usuń oznaczenie gwiazdką"
+    }
   },
   "settings": {
     "modelSettings": {
@@ -199,6 +204,14 @@
           "transcribe_with_post_process": {
             "name": "Skrót postprocessingu",
             "description": "Opcjonalnie: Dedykowany skrót klawiszowy, który zawsze stosuje postprocessing AI do transkrypcji."
+          },
+          "toggle_translation": {
+            "name": "Skrót tłumaczenia",
+            "description": "Włącza lub wyłącza tłumaczenie na angielski. Przełącza na model ostatnio używany do tłumaczenia, a po wyłączeniu wraca do poprzedniego."
+          },
+          "cycle_model": {
+            "name": "Skrót następnego modelu",
+            "description": "Przełącza na następny model oznaczony gwiazdką. Przy mniej niż dwóch oznaczonych, przełącza między wszystkimi pobranymi modelami."
           }
         },
         "errors": {
@@ -699,7 +712,14 @@
   },
   "overlay": {
     "transcribing": "Transkrypcja...",
-    "processing": "Przetwarzanie..."
+    "processing": "Przetwarzanie...",
+    "notice": {
+      "translationOn": "Tłumaczenie włączone",
+      "translationOff": "Tłumaczenie wyłączone",
+      "modelNoTranslation": "{{model}} · nie tłumaczy",
+      "noTranslationModel": "Żaden pobrany model nie potrafi tłumaczyć",
+      "switchFailed": "Nie udało się przełączyć na {{model}}"
+    }
   },
   "whatsNew": {
     "title": "Nowości w Handy v{{version}}"

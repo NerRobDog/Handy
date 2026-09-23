@@ -7,7 +7,8 @@
     "model": "Modèle",
     "quit": "Quitter",
     "cancel": "Annuler",
-    "secureInputWarning": "⚠ Raccourcis bloqués par Secure Input"
+    "secureInputWarning": "⚠ Raccourcis bloqués par Secure Input",
+    "translateToEnglish": "Traduire en anglais"
   },
   "sidebar": {
     "general": "Général",
@@ -152,7 +153,11 @@
     },
     "cancel": "Annuler",
     "cancelDownload": "Annuler le téléchargement",
-    "legacy": "Hérité"
+    "legacy": "Hérité",
+    "favorite": {
+      "add": "Marquer d'une étoile pour le raccourci du modèle suivant",
+      "remove": "Retirer l'étoile"
+    }
   },
   "settings": {
     "modelSettings": {
@@ -199,6 +204,14 @@
           "transcribe_with_post_process": {
             "name": "Raccourci de post-traitement",
             "description": "Facultatif : Un raccourci dédié qui applique toujours le post-traitement IA à votre transcription."
+          },
+          "toggle_translation": {
+            "name": "Raccourci de Traduction",
+            "description": "Active ou désactive la traduction en anglais. Passe au dernier modèle utilisé pour la traduction, puis revient en arrière une fois désactivée."
+          },
+          "cycle_model": {
+            "name": "Raccourci du Modèle Suivant",
+            "description": "Passe au modèle suivant marqué d'une étoile. S'il y en a moins de deux, parcourt tous les modèles téléchargés."
           }
         },
         "errors": {
@@ -699,7 +712,14 @@
   },
   "overlay": {
     "transcribing": "Transcription...",
-    "processing": "Traitement..."
+    "processing": "Traitement...",
+    "notice": {
+      "translationOn": "Traduction activée",
+      "translationOff": "Traduction désactivée",
+      "modelNoTranslation": "{{model}} · ne traduit pas",
+      "noTranslationModel": "Aucun modèle téléchargé ne peut traduire",
+      "switchFailed": "Impossible de passer à {{model}}"
+    }
   },
   "whatsNew": {
     "title": "Nouveautés de Handy v{{version}}"
