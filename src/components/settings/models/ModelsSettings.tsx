@@ -67,8 +67,20 @@ export const ModelsSettings: React.FC = () => {
     NO_FAVORITES;
   const refreshSettings = useSettingsStore((state) => state.refreshSettings);
 
+  // Only downloaded favorites are actually in the cycle shortcut's rotation,
+  // so ranks are numbered among those — otherwise a favorite that isn't
+  // downloaded yet would make later ranks skip numbers (e.g. ★2, ★3 for a
+  // two-model cycle). Preserves favoriteModels' star order.
+  const downloadedFavoriteIds = useMemo(
+    () =>
+      favoriteModels.filter((id) =>
+        models.some((m) => m.id === id && m.is_downloaded),
+      ),
+    [favoriteModels, models],
+  );
+
   const favoriteRank = (modelId: string): number | null => {
-    const index = favoriteModels.indexOf(modelId);
+    const index = downloadedFavoriteIds.indexOf(modelId);
     return index === -1 ? null : index + 1;
   };
 

@@ -292,6 +292,7 @@ const ModelCard: React.FC<ModelCardProps> = ({
               variant="ghost"
               size="sm"
               onClick={handleToggleFavorite}
+              onKeyDown={(e) => e.stopPropagation()}
               aria-pressed={isFavorite}
               title={
                 isFavorite
