@@ -7,7 +7,8 @@
     "model": "Modell",
     "quit": "Avsluta",
     "cancel": "Avbryt",
-    "secureInputWarning": "⚠ Kortkommandon blockeras av Secure Input"
+    "secureInputWarning": "⚠ Kortkommandon blockeras av Secure Input",
+    "translateToEnglish": "Översätt till engelska"
   },
   "sidebar": {
     "general": "Allmänt",
@@ -152,7 +153,11 @@
       "translate": "Översätt till engelska",
       "streaming": "Visar transkription i realtid medan du talar"
     },
-    "legacy": "Äldre"
+    "legacy": "Äldre",
+    "favorite": {
+      "add": "Stjärnmärk för kortkommandot för nästa modell",
+      "remove": "Ta bort stjärnmärkning"
+    }
   },
   "settings": {
     "modelSettings": {
@@ -179,6 +184,14 @@
           "transcribe_with_post_process": {
             "name": "Snabbkommando för efterbearbetning",
             "description": "Valfritt: En dedikerad snabbknapp som alltid tillämpar AI-efterbearbetning på din transkription."
+          },
+          "toggle_translation": {
+            "name": "Kortkommando för översättning",
+            "description": "Slår på eller av översättning till engelska. Byter till den senast använda modellen för översättning, och tillbaka igen när den stängs av."
+          },
+          "cycle_model": {
+            "name": "Kortkommando för nästa modell",
+            "description": "Byter till nästa stjärnmärkta modell. Med färre än två markerade växlar den mellan alla nedladdade modeller."
           }
         },
         "errors": {
@@ -699,7 +712,14 @@
   },
   "overlay": {
     "transcribing": "Transkriberar...",
-    "processing": "Bearbetar..."
+    "processing": "Bearbetar...",
+    "notice": {
+      "translationOn": "Översättning på",
+      "translationOff": "Översättning av",
+      "modelNoTranslation": "{{model}} · översätter inte",
+      "noTranslationModel": "Ingen nedladdad modell kan översätta",
+      "switchFailed": "Det gick inte att byta till {{model}}"
+    }
   },
   "whatsNew": {
     "title": "Nytt i Handy v{{version}}"

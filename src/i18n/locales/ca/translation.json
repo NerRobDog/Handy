@@ -7,7 +7,8 @@
     "model": "Model",
     "quit": "Surt",
     "cancel": "Cancel·la",
-    "secureInputWarning": "⚠ Dreceres blocades per l'entrada segura"
+    "secureInputWarning": "⚠ Dreceres blocades per l'entrada segura",
+    "translateToEnglish": "Tradueix a l'anglès"
   },
   "sidebar": {
     "general": "General",
@@ -152,6 +153,10 @@
       "translation": "Pot traduir a l'anglès",
       "translate": "Tradueix",
       "streaming": "Mostra la transcripció en temps real mentre parleu"
+    },
+    "favorite": {
+      "add": "Marca amb estrella per a la drecera del model següent",
+      "remove": "Desmarca l'estrella"
     }
   },
   "settings": {
@@ -179,6 +184,14 @@
           "transcribe_with_post_process": {
             "name": "Drecera de postprocessament",
             "description": "Opcional: una drecera específica que sempre aplica postprocessament amb IA a la transcripció."
+          },
+          "toggle_translation": {
+            "name": "Drecera de traducció",
+            "description": "Activa o desactiva la traducció a l'anglès. Canvia a l'últim model utilitzat per traduir, i torna enrere en desactivar-la."
+          },
+          "cycle_model": {
+            "name": "Drecera del model següent",
+            "description": "Canvia al model següent marcat amb estrella. Amb menys de dos marcats, recorre tots els models baixats."
           }
         },
         "errors": {
@@ -702,7 +715,14 @@
   },
   "overlay": {
     "transcribing": "S'està transcrivint...",
-    "processing": "S'està processant..."
+    "processing": "S'està processant...",
+    "notice": {
+      "translationOn": "Traducció activada",
+      "translationOff": "Traducció desactivada",
+      "modelNoTranslation": "{{model}} · no tradueix",
+      "noTranslationModel": "Cap model baixat pot traduir",
+      "switchFailed": "No s'ha pogut canviar a {{model}}"
+    }
   },
   "secureInput": {
     "blockedWithCulprit_one": "{{name}} pot estar blocant 1 drecera",

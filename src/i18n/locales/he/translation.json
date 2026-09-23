@@ -7,7 +7,8 @@
     "model": "מודל",
     "quit": "יציאה",
     "cancel": "ביטול",
-    "secureInputWarning": "⚠ קיצורי המקשים חסומים על ידי Secure Input"
+    "secureInputWarning": "⚠ קיצורי המקשים חסומים על ידי Secure Input",
+    "translateToEnglish": "תרגם לאנגלית"
   },
   "sidebar": {
     "general": "כללי",
@@ -152,7 +153,11 @@
       "translate": "תרגם לאנגלית",
       "streaming": "מציג תמלול חי תוך כדי דיבור"
     },
-    "legacy": "מדור קודם"
+    "legacy": "מדור קודם",
+    "favorite": {
+      "add": "סמן בכוכב עבור קיצור המודל הבא",
+      "remove": "הסר סימון כוכב"
+    }
   },
   "settings": {
     "modelSettings": {
@@ -179,6 +184,14 @@
           "transcribe_with_post_process": {
             "name": "קיצור לעיבוד משלים",
             "description": "אופציונלי: קיצור מקשים ייעודי שתמיד מפעיל עיבוד AI על התמלול."
+          },
+          "toggle_translation": {
+            "name": "קיצור תרגום",
+            "description": "מפעיל וכובה את התרגום לאנגלית. עובר למודל האחרון ששימש לתרגום, וחוזר בכיבוי."
+          },
+          "cycle_model": {
+            "name": "קיצור המודל הבא",
+            "description": "עובר למודל המסומן בכוכב הבא. אם פחות משניים מסומנים, עובר בין כל המודלים שהורדו."
           }
         },
         "errors": {
@@ -699,7 +712,14 @@
   },
   "overlay": {
     "transcribing": "מתמלל...",
-    "processing": "מעבד..."
+    "processing": "מעבד...",
+    "notice": {
+      "translationOn": "תרגום מופעל",
+      "translationOff": "תרגום כבוי",
+      "modelNoTranslation": "{{model}} · לא מתרגם",
+      "noTranslationModel": "אין מודל שהורד שיכול לתרגם",
+      "switchFailed": "המעבר אל {{model}} נכשל"
+    }
   },
   "whatsNew": {
     "title": "חדש ב-Handy v{{version}}"

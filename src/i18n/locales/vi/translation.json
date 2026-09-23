@@ -7,7 +7,8 @@
     "model": "Mô hình",
     "quit": "Thoát",
     "cancel": "Hủy",
-    "secureInputWarning": "⚠ Phím tắt bị Secure Input chặn"
+    "secureInputWarning": "⚠ Phím tắt bị Secure Input chặn",
+    "translateToEnglish": "Dịch sang tiếng Anh"
   },
   "sidebar": {
     "general": "Chung",
@@ -152,7 +153,11 @@
     },
     "cancel": "Hủy",
     "cancelDownload": "Hủy tải xuống",
-    "legacy": "Cũ"
+    "legacy": "Cũ",
+    "favorite": {
+      "add": "Đánh dấu sao cho phím tắt mô hình tiếp theo",
+      "remove": "Bỏ đánh dấu sao"
+    }
   },
   "settings": {
     "modelSettings": {
@@ -199,6 +204,14 @@
           "transcribe_with_post_process": {
             "name": "Phím tắt xử lý sau",
             "description": "Tùy chọn: Phím tắt chuyên dụng luôn áp dụng xử lý sau bằng AI cho bản chuyển đổi của bạn."
+          },
+          "toggle_translation": {
+            "name": "Phím tắt dịch",
+            "description": "Bật hoặc tắt tính năng dịch sang tiếng Anh. Chuyển sang mô hình được dùng để dịch gần nhất, và quay lại khi tắt."
+          },
+          "cycle_model": {
+            "name": "Phím tắt mô hình tiếp theo",
+            "description": "Chuyển sang mô hình được đánh dấu sao tiếp theo. Nếu có ít hơn hai mô hình được đánh dấu sao, sẽ chuyển lần lượt qua tất cả mô hình đã tải."
           }
         },
         "errors": {
@@ -699,7 +712,14 @@
   },
   "overlay": {
     "transcribing": "Đang chuyển đổi...",
-    "processing": "Đang xử lý..."
+    "processing": "Đang xử lý...",
+    "notice": {
+      "translationOn": "Dịch: bật",
+      "translationOff": "Dịch: tắt",
+      "modelNoTranslation": "{{model}} · không dịch",
+      "noTranslationModel": "Không có mô hình đã tải nào có thể dịch",
+      "switchFailed": "Không thể chuyển sang {{model}}"
+    }
   },
   "whatsNew": {
     "title": "Điểm mới trong Handy v{{version}}"

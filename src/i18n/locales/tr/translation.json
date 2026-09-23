@@ -7,7 +7,8 @@
     "model": "Model",
     "quit": "Çıkış",
     "cancel": "İptal",
-    "secureInputWarning": "⚠ Kısayollar Secure Input tarafından engelleniyor"
+    "secureInputWarning": "⚠ Kısayollar Secure Input tarafından engelleniyor",
+    "translateToEnglish": "İngilizce'ye Çevir"
   },
   "sidebar": {
     "general": "Genel",
@@ -152,7 +153,11 @@
     },
     "cancel": "İptal",
     "cancelDownload": "İndirmeyi iptal et",
-    "legacy": "Eski"
+    "legacy": "Eski",
+    "favorite": {
+      "add": "Sonraki Model kısayolu için yıldızla",
+      "remove": "Yıldızı kaldır"
+    }
   },
   "settings": {
     "modelSettings": {
@@ -199,6 +204,14 @@
           "transcribe_with_post_process": {
             "name": "Son İşlem Kısayolu",
             "description": "İsteğe bağlı: Transkripsiyonunuza her zaman yapay zekâ ile son işlem uygulayan özel bir kısayol tuşu."
+          },
+          "toggle_translation": {
+            "name": "Çeviri Kısayolu",
+            "description": "İngilizce'ye çeviriyi açar veya kapatır. Çeviri için en son kullanılan modele geçer ve kapatıldığında geri döner."
+          },
+          "cycle_model": {
+            "name": "Sonraki Model Kısayolu",
+            "description": "Bir sonraki yıldızlı modele geçer. İkiden az yıldızlı model varsa, indirilen tüm modeller arasında geçiş yapar."
           }
         },
         "errors": {
@@ -699,7 +712,14 @@
   },
   "overlay": {
     "transcribing": "Transkribe ediliyor...",
-    "processing": "İşleniyor..."
+    "processing": "İşleniyor...",
+    "notice": {
+      "translationOn": "Çeviri açık",
+      "translationOff": "Çeviri kapalı",
+      "modelNoTranslation": "{{model}} · çeviri yapmıyor",
+      "noTranslationModel": "İndirilen hiçbir model çeviri yapamıyor",
+      "switchFailed": "Geçiş başarısız oldu: {{model}}"
+    }
   },
   "whatsNew": {
     "title": "Handy v{{version}} yenilikleri"

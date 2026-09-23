@@ -7,7 +7,8 @@
     "model": "模型",
     "quit": "退出",
     "cancel": "取消",
-    "secureInputWarning": "⚠ 快捷键被 Secure Input 阻止"
+    "secureInputWarning": "⚠ 快捷键被 Secure Input 阻止",
+    "translateToEnglish": "翻译为英语"
   },
   "sidebar": {
     "general": "通用",
@@ -152,7 +153,11 @@
     },
     "cancel": "取消",
     "cancelDownload": "取消下载",
-    "legacy": "旧版"
+    "legacy": "旧版",
+    "favorite": {
+      "add": "为下一个模型快捷键加星标",
+      "remove": "取消星标"
+    }
   },
   "settings": {
     "modelSettings": {
@@ -199,6 +204,14 @@
           "transcribe_with_post_process": {
             "name": "后处理快捷键",
             "description": "可选：一个专用快捷键，始终对您的转录应用 AI 后处理。"
+          },
+          "toggle_translation": {
+            "name": "翻译快捷键",
+            "description": "开启或关闭翻译为英语功能。切换到上次用于翻译的模型，关闭时切回原模型。"
+          },
+          "cycle_model": {
+            "name": "下一个模型快捷键",
+            "description": "切换到下一个已加星标的模型。加星标的模型少于两个时，将在所有已下载的模型间循环切换。"
           }
         },
         "errors": {
@@ -699,7 +712,14 @@
   },
   "overlay": {
     "transcribing": "正在转录...",
-    "processing": "处理中..."
+    "processing": "处理中...",
+    "notice": {
+      "translationOn": "翻译已开启",
+      "translationOff": "翻译已关闭",
+      "modelNoTranslation": "{{model}} · 不支持翻译",
+      "noTranslationModel": "没有已下载的模型支持翻译",
+      "switchFailed": "无法切换到 {{model}}"
+    }
   },
   "whatsNew": {
     "title": "Handy v{{version}} 新功能"

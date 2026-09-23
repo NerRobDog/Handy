@@ -7,7 +7,8 @@
     "model": "모델",
     "quit": "종료",
     "cancel": "취소",
-    "secureInputWarning": "⚠ Secure Input으로 단축키가 차단됨"
+    "secureInputWarning": "⚠ Secure Input으로 단축키가 차단됨",
+    "translateToEnglish": "영어로 번역"
   },
   "sidebar": {
     "general": "일반",
@@ -152,7 +153,11 @@
       "translate": "영어로 번역",
       "streaming": "말하는 동안 실시간으로 음성 인식 결과를 표시"
     },
-    "legacy": "레거시"
+    "legacy": "레거시",
+    "favorite": {
+      "add": "다음 모델 단축키용으로 별표 표시",
+      "remove": "별표 해제"
+    }
   },
   "settings": {
     "modelSettings": {
@@ -179,6 +184,14 @@
           "transcribe_with_post_process": {
             "name": "후처리 단축키",
             "description": "선택 사항: 항상 AI 후처리를 적용하는 전용 단축키입니다."
+          },
+          "toggle_translation": {
+            "name": "번역 단축키",
+            "description": "영어 번역을 켜거나 끕니다. 번역에 마지막으로 사용한 모델로 전환하고, 끄면 이전 모델로 돌아갑니다."
+          },
+          "cycle_model": {
+            "name": "다음 모델 단축키",
+            "description": "다음 별표 표시된 모델로 전환합니다. 별표가 두 개 미만이면 다운로드된 모든 모델을 순환합니다."
           }
         },
         "errors": {
@@ -699,7 +712,14 @@
   },
   "overlay": {
     "transcribing": "텍스트로 변환 중...",
-    "processing": "처리 중..."
+    "processing": "처리 중...",
+    "notice": {
+      "translationOn": "번역 켜짐",
+      "translationOff": "번역 꺼짐",
+      "modelNoTranslation": "{{model}} · 번역 안 함",
+      "noTranslationModel": "번역 가능한 다운로드된 모델이 없습니다",
+      "switchFailed": "전환 실패: {{model}}"
+    }
   },
   "whatsNew": {
     "title": "Handy v{{version}}의 새 소식"

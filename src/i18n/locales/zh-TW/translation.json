@@ -7,7 +7,8 @@
     "model": "模型",
     "quit": "結束",
     "cancel": "取消",
-    "secureInputWarning": "⚠ 快捷鍵被 Secure Input 阻擋"
+    "secureInputWarning": "⚠ 快捷鍵被 Secure Input 阻擋",
+    "translateToEnglish": "翻譯為英語"
   },
   "sidebar": {
     "general": "一般",
@@ -152,7 +153,11 @@
       "translate": "翻譯為英語",
       "streaming": "在您說話時即時顯示轉錄"
     },
-    "legacy": "舊版"
+    "legacy": "舊版",
+    "favorite": {
+      "add": "為下一個模型快捷鍵加星標",
+      "remove": "取消星標"
+    }
   },
   "settings": {
     "modelSettings": {
@@ -179,6 +184,14 @@
           "transcribe_with_post_process": {
             "name": "後處理快捷鍵",
             "description": "可選：專用快捷鍵，使用時一律對轉錄結果套用 AI 後處理"
+          },
+          "toggle_translation": {
+            "name": "翻譯快捷鍵",
+            "description": "開啟或關閉翻譯為英語功能。切換到上次用於翻譯的模型，關閉時切回原本的模型。"
+          },
+          "cycle_model": {
+            "name": "下一個模型快捷鍵",
+            "description": "切換到下一個已加星標的模型。加星標的模型少於兩個時，會在所有已下載的模型間循環切換。"
           }
         },
         "errors": {
@@ -699,7 +712,14 @@
   },
   "overlay": {
     "transcribing": "正在轉錄...",
-    "processing": "處理中..."
+    "processing": "處理中...",
+    "notice": {
+      "translationOn": "翻譯已開啟",
+      "translationOff": "翻譯已關閉",
+      "modelNoTranslation": "{{model}} · 不支援翻譯",
+      "noTranslationModel": "沒有已下載的模型支援翻譯",
+      "switchFailed": "無法切換到 {{model}}"
+    }
   },
   "whatsNew": {
     "title": "Handy v{{version}} 新功能"

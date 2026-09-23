@@ -16,6 +16,7 @@ mod memory;
 mod overlay;
 mod paste_tx;
 pub mod portable;
+mod quick_switch;
 mod secure_input;
 mod settings;
 mod shortcut;
@@ -321,6 +322,9 @@ fn initialize_core_logic(app_handle: &AppHandle) {
             }
             "quit" => {
                 app.exit(0);
+            }
+            "toggle_translation" => {
+                quick_switch::toggle_translation_mode(app);
             }
             id if id.starts_with("model_select:") => {
                 let model_id = id.strip_prefix("model_select:").unwrap().to_string();
@@ -732,6 +736,7 @@ pub fn run(cli_args: CliArgs) {
             commands::models::delete_model,
             commands::models::cancel_download,
             commands::models::set_active_model,
+            commands::models::toggle_favorite_model,
             commands::models::get_current_model,
             commands::models::get_transcription_model_status,
             commands::models::is_model_loading,
@@ -769,6 +774,7 @@ pub fn run(cli_args: CliArgs) {
             managers::history::HistoryUpdatePayload,
             managers::transcription::StreamTextEvent,
             managers::transcription::StreamPhaseEvent,
+            overlay::OverlayNoticeEvent,
         ]);
 
     #[cfg(debug_assertions)] // <- Only export on non-release builds

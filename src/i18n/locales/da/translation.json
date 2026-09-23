@@ -7,7 +7,8 @@
     "model": "Model",
     "quit": "Afslut",
     "cancel": "Annuller",
-    "secureInputWarning": "⚠ Genveje blokeret af Secure Input"
+    "secureInputWarning": "⚠ Genveje blokeret af Secure Input",
+    "translateToEnglish": "Oversæt til engelsk"
   },
   "sidebar": {
     "general": "Generelt",
@@ -152,6 +153,10 @@
       "translation": "Kan oversætte til engelsk",
       "translate": "Oversæt",
       "streaming": "Viser live transskription, mens du taler"
+    },
+    "favorite": {
+      "add": "Marker med stjerne til genvejen til næste model",
+      "remove": "Fjern stjerne"
     }
   },
   "settings": {
@@ -179,6 +184,14 @@
           "transcribe_with_post_process": {
             "name": "Genvej til efterbehandling",
             "description": "Valgfrit: En dedikeret genvej, der altid anvender AI-efterbehandling på din transskription."
+          },
+          "toggle_translation": {
+            "name": "Oversættelsesgenvej",
+            "description": "Slår oversættelse til engelsk til eller fra. Skifter til den model, der sidst blev brugt til oversættelse, og tilbage igen, når den slås fra."
+          },
+          "cycle_model": {
+            "name": "Genvej til næste model",
+            "description": "Skifter til den næste model med stjerne. Med færre end to markeret, skifter den mellem alle downloadede modeller."
           }
         },
         "errors": {
@@ -702,7 +715,14 @@
   },
   "overlay": {
     "transcribing": "Transskriberer...",
-    "processing": "Behandler..."
+    "processing": "Behandler...",
+    "notice": {
+      "translationOn": "Oversættelse: Til",
+      "translationOff": "Oversættelse: Fra",
+      "modelNoTranslation": "{{model}} · oversætter ikke",
+      "noTranslationModel": "Ingen downloadet model kan oversætte",
+      "switchFailed": "Kunne ikke skifte til {{model}}"
+    }
   },
   "secureInput": {
     "blockedWithCulprit_one": "{{name}} blokerer muligvis 1 genvej",

@@ -631,8 +631,12 @@ pub fn apply_window_theme(app: &AppHandle, theme: Theme) {
 #[specta::specta]
 pub fn change_translate_to_english_setting(app: AppHandle, enabled: bool) -> Result<(), String> {
     let mut settings = settings::get_settings(&app);
-    settings.translate_to_english = enabled;
+    crate::quick_switch::apply_manual_translation_toggle(&mut settings, enabled);
     settings::write_settings(&app, settings);
+    // Keep the tray check item in sync with a checkbox change made here. Sync
+    // commands run on the main thread, and the tray snapshot can wait on the
+    // engine lock during a transcription (#1716), so take it off this thread.
+    std::thread::spawn(move || tray::update_tray_menu(&app));
     Ok(())
 }
 
@@ -1421,6 +1425,28 @@ mod tests {
         ] {
             assert!(key.parse::<Shortcut>().is_ok(), "Tauri rejected {key}");
             assert!(key.parse::<Hotkey>().is_ok(), "HandyKeys rejected {key}");
+        }
+    }
+
+    #[test]
+    fn every_default_binding_is_valid_for_both_implementations() {
+        use crate::settings::{get_default_settings, KeyboardImplementation};
+        for (id, binding) in get_default_settings().bindings {
+            for implementation in [
+                KeyboardImplementation::Tauri,
+                KeyboardImplementation::HandyKeys,
+            ] {
+                super::validate_shortcut_for_implementation(
+                    &binding.default_binding,
+                    implementation,
+                )
+                .unwrap_or_else(|e| {
+                    panic!(
+                        "default binding '{id}' ({}) invalid for {implementation:?}: {e}",
+                        binding.default_binding
+                    )
+                });
+            }
         }
     }
 }

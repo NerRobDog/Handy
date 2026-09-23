@@ -7,7 +7,8 @@
     "model": "Модель",
     "quit": "Выход",
     "cancel": "Отмена",
-    "secureInputWarning": "⚠ Сочетания клавиш заблокированы Secure Input"
+    "secureInputWarning": "⚠ Сочетания клавиш заблокированы Secure Input",
+    "translateToEnglish": "Переводить на английский"
   },
   "sidebar": {
     "general": "Общие",
@@ -152,7 +153,11 @@
     },
     "cancel": "Отмена",
     "cancelDownload": "Отменить загрузку",
-    "legacy": "Устаревшее"
+    "legacy": "Устаревшее",
+    "favorite": {
+      "add": "Отметить для горячей клавиши следующей модели",
+      "remove": "Снять звёздочку"
+    }
   },
   "settings": {
     "modelSettings": {
@@ -199,6 +204,14 @@
           "transcribe_with_post_process": {
             "name": "Горячая клавиша постобработки",
             "description": "Специальное сочетание клавиш для ИИ-постобработки вашей транскрипции."
+          },
+          "toggle_translation": {
+            "name": "Горячая клавиша перевода",
+            "description": "Включает и выключает перевод на английский. Переключается на последнюю модель, на которой шёл перевод, а при выключении возвращает прежнюю."
+          },
+          "cycle_model": {
+            "name": "Горячая клавиша следующей модели",
+            "description": "Переключает на следующую модель со звёздочкой. Если отмечено меньше двух, перебирает все скачанные модели."
           }
         },
         "errors": {
@@ -699,7 +712,14 @@
   },
   "overlay": {
     "transcribing": "Расшифровка...",
-    "processing": "Обработка..."
+    "processing": "Обработка...",
+    "notice": {
+      "translationOn": "Перевод: вкл",
+      "translationOff": "Перевод: выкл",
+      "modelNoTranslation": "{{model}} · не переводит",
+      "noTranslationModel": "Нет скачанной модели с переводом",
+      "switchFailed": "Не удалось переключиться на {{model}}"
+    }
   },
   "whatsNew": {
     "title": "Новое в Handy v{{version}}"

@@ -91,8 +91,27 @@ pub async fn delete_model(
 ///
 /// Validates the model, updates the persisted setting, and loads the model
 /// unless the unload timeout is set to "Immediately" (in which case the model
-/// will be loaded on-demand during the next transcription).
+/// will be loaded on-demand during the next transcription). On success,
+/// remembers the model as the translation model when translation is on.
 pub fn switch_active_model(app: &AppHandle, model_id: &str) -> Result<(), String> {
+    switch_active_model_inner(app, model_id)?;
+    let model_manager = app.state::<Arc<ModelManager>>();
+    if let Some(info) = model_manager.get_model_info(model_id) {
+        let candidate = crate::quick_switch::ModelCandidate {
+            id: info.id,
+            name: info.name,
+            supports_translation: info.supports_translation,
+        };
+        let mut settings = get_settings(app);
+        if crate::quick_switch::remember_translation_model(&mut settings, &candidate) {
+            write_settings(app, settings);
+        }
+    }
+    Ok(())
+}
+
+/// Does the actual switch; see [`switch_active_model`].
+fn switch_active_model_inner(app: &AppHandle, model_id: &str) -> Result<(), String> {
     let model_manager = app.state::<Arc<ModelManager>>();
     let transcription_manager = app.state::<Arc<TranscriptionManager>>();
 
@@ -203,4 +222,23 @@ pub async fn cancel_download(
     model_manager
         .cancel_download(&model_id)
         .map_err(|e| e.to_string())
+}
+
+/// Stars or unstars a model for the next-model shortcut. Returns the
+/// favorites in star order.
+#[tauri::command]
+#[specta::specta]
+pub fn toggle_favorite_model(
+    app_handle: AppHandle,
+    model_id: String,
+) -> Result<Vec<String>, String> {
+    let mut settings = get_settings(&app_handle);
+    crate::quick_switch::toggle_favorite(&mut settings.favorite_models, &model_id);
+    let favorites = settings.favorite_models.clone();
+    write_settings(&app_handle, settings);
+    let _ = app_handle.emit(
+        "settings-changed",
+        serde_json::json!({ "setting": "favorite_models" }),
+    );
+    Ok(favorites)
 }

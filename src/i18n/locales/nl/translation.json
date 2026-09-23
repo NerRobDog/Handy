@@ -7,7 +7,8 @@
     "model": "Model",
     "quit": "Afsluiten",
     "cancel": "Annuleren",
-    "secureInputWarning": "⚠ Sneltoetsen geblokkeerd door Secure Input"
+    "secureInputWarning": "⚠ Sneltoetsen geblokkeerd door Secure Input",
+    "translateToEnglish": "Vertalen naar het Engels"
   },
   "sidebar": {
     "general": "Algemeen",
@@ -152,6 +153,10 @@
       "translation": "Kan vertalen naar het Engels",
       "translate": "Vertalen",
       "streaming": "Toont live transcriptie tijdens het spreken"
+    },
+    "favorite": {
+      "add": "Markeer met ster voor de sneltoets voor volgend model",
+      "remove": "Ster verwijderen"
     }
   },
   "settings": {
@@ -179,6 +184,14 @@
           "transcribe_with_post_process": {
             "name": "Sneltoets voor naverwerking",
             "description": "Optioneel: Een specifieke sneltoets die altijd AI-naverwerking toepast op je transcriptie."
+          },
+          "toggle_translation": {
+            "name": "Sneltoets voor vertaling",
+            "description": "Zet vertaling naar het Engels aan of uit. Schakelt naar het laatst gebruikte model voor vertaling, en weer terug wanneer uitgeschakeld."
+          },
+          "cycle_model": {
+            "name": "Sneltoets voor volgend model",
+            "description": "Schakelt naar het volgende met ster gemarkeerde model. Bij minder dan twee gemarkeerd, doorloopt het alle gedownloade modellen."
           }
         },
         "errors": {
@@ -702,7 +715,14 @@
   },
   "overlay": {
     "transcribing": "Transcriberen...",
-    "processing": "Verwerken..."
+    "processing": "Verwerken...",
+    "notice": {
+      "translationOn": "Vertaling aan",
+      "translationOff": "Vertaling uit",
+      "modelNoTranslation": "{{model}} · vertaalt niet",
+      "noTranslationModel": "Geen gedownload model kan vertalen",
+      "switchFailed": "Kon niet overschakelen naar {{model}}"
+    }
   },
   "secureInput": {
     "blockedWithCulprit_one": "{{name}} blokkeert mogelijk 1 sneltoets",

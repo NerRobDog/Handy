@@ -7,7 +7,8 @@
     "model": "Model",
     "quit": "Ukončit",
     "cancel": "Zrušit",
-    "secureInputWarning": "⚠ Zkratky blokuje Secure Input"
+    "secureInputWarning": "⚠ Zkratky blokuje Secure Input",
+    "translateToEnglish": "Přeložit do angličtiny"
   },
   "sidebar": {
     "general": "Obecné",
@@ -152,7 +153,11 @@
     },
     "cancel": "Zrušit",
     "cancelDownload": "Zrušit stahování",
-    "legacy": "Zastaralé"
+    "legacy": "Zastaralé",
+    "favorite": {
+      "add": "Označit hvězdičkou pro zkratku dalšího modelu",
+      "remove": "Zrušit hvězdičku"
+    }
   },
   "settings": {
     "modelSettings": {
@@ -199,6 +204,14 @@
           "transcribe_with_post_process": {
             "name": "Klávesa pro následné zpracování",
             "description": "Volitelné: Vyhrazená klávesová zkratka, která vždy použije AI následné zpracování na váš přepis."
+          },
+          "toggle_translation": {
+            "name": "Zkratka překladu",
+            "description": "Zapíná a vypíná překlad do angličtiny. Přepne na poslední model použitý pro překlad a při vypnutí se vrátí zpět."
+          },
+          "cycle_model": {
+            "name": "Zkratka dalšího modelu",
+            "description": "Přepne na další model označený hvězdičkou. Pokud jsou označeny méně než dva, prochází všechny stažené modely."
           }
         },
         "errors": {
@@ -699,7 +712,14 @@
   },
   "overlay": {
     "transcribing": "Přepisuji...",
-    "processing": "Zpracovávám..."
+    "processing": "Zpracovávám...",
+    "notice": {
+      "translationOn": "Překlad zapnutý",
+      "translationOff": "Překlad vypnutý",
+      "modelNoTranslation": "{{model}} · nepřekládá",
+      "noTranslationModel": "Žádný stažený model neumí překládat",
+      "switchFailed": "Nepodařilo se přepnout na {{model}}"
+    }
   },
   "whatsNew": {
     "title": "Novinky v Handy v{{version}}"

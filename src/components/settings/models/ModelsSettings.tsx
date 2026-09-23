@@ -12,6 +12,8 @@ import {
 import type { ModelCardStatus } from "@/components/onboarding";
 import { ModelCard } from "@/components/onboarding";
 import { useModelStore } from "@/stores/modelStore";
+import { useSettingsStore } from "@/stores/settingsStore";
+import { commands } from "@/bindings";
 import {
   getLanguageLabel,
   MODEL_CAPABILITY_LANGUAGES,
@@ -29,6 +31,8 @@ const modelSupportsLanguage = (model: ModelInfo, langCode: string): boolean => {
 // advertise the download.
 const isLegacyModel = (model: ModelInfo): boolean =>
   typeof model.source === "object" && "Url" in model.source;
+
+const NO_FAVORITES: string[] = [];
 
 export const ModelsSettings: React.FC = () => {
   const { t } = useTranslation();
@@ -57,6 +61,37 @@ export const ModelsSettings: React.FC = () => {
     deleteModel,
     rescanLocalModels,
   } = useModelStore();
+
+  const favoriteModels =
+    useSettingsStore((state) => state.settings?.favorite_models) ??
+    NO_FAVORITES;
+  const refreshSettings = useSettingsStore((state) => state.refreshSettings);
+
+  // Only downloaded favorites are actually in the cycle shortcut's rotation,
+  // so ranks are numbered among those — otherwise a favorite that isn't
+  // downloaded yet would make later ranks skip numbers (e.g. ★2, ★3 for a
+  // two-model cycle). Preserves favoriteModels' star order.
+  const downloadedFavoriteIds = useMemo(
+    () =>
+      favoriteModels.filter((id) =>
+        models.some((m) => m.id === id && m.is_downloaded),
+      ),
+    [favoriteModels, models],
+  );
+
+  const favoriteRank = (modelId: string): number | null => {
+    const index = downloadedFavoriteIds.indexOf(modelId);
+    return index === -1 ? null : index + 1;
+  };
+
+  const handleToggleFavorite = async (modelId: string) => {
+    const result = await commands.toggleFavoriteModel(modelId);
+    if (result.status === "error") {
+      console.error(`Failed to toggle favorite for ${modelId}:`, result.error);
+      return;
+    }
+    await refreshSettings();
+  };
 
   // click outside handler for language dropdown
   useEffect(() => {
@@ -418,6 +453,8 @@ export const ModelsSettings: React.FC = () => {
               downloadProgress={getDownloadProgress(model.id)}
               downloadSpeed={getDownloadSpeed(model.id)}
               showRecommended={false}
+              favoriteRank={favoriteRank(model.id)}
+              onToggleFavorite={handleToggleFavorite}
             />
           ))}
         </div>

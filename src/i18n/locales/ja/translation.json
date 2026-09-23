@@ -7,7 +7,8 @@
     "model": "モデル",
     "quit": "終了",
     "cancel": "キャンセル",
-    "secureInputWarning": "⚠ Secure Input でショートカットがブロック中"
+    "secureInputWarning": "⚠ Secure Input でショートカットがブロック中",
+    "translateToEnglish": "英語に翻訳"
   },
   "sidebar": {
     "general": "一般",
@@ -152,7 +153,11 @@
     },
     "cancel": "キャンセル",
     "cancelDownload": "ダウンロードをキャンセル",
-    "legacy": "旧式"
+    "legacy": "旧式",
+    "favorite": {
+      "add": "次のモデルのショートカット用にスターを付ける",
+      "remove": "スターを外す"
+    }
   },
   "settings": {
     "modelSettings": {
@@ -199,6 +204,14 @@
           "transcribe_with_post_process": {
             "name": "後処理のショートカット",
             "description": "文字起こしに常に AI 後処理を適用するキーボードショートカット。 (任意)"
+          },
+          "toggle_translation": {
+            "name": "翻訳のショートカット",
+            "description": "英語への翻訳のオン/オフを切り替えます。翻訳に最後に使用したモデルに切り替わり、オフにすると元に戻ります。"
+          },
+          "cycle_model": {
+            "name": "次のモデルのショートカット",
+            "description": "次にスター付きのモデルに切り替えます。スター付きが2つ未満の場合は、ダウンロード済みのすべてのモデルを順に切り替えます。"
           }
         },
         "errors": {
@@ -699,7 +712,14 @@
   },
   "overlay": {
     "transcribing": "文字起こし中…",
-    "processing": "処理中…"
+    "processing": "処理中…",
+    "notice": {
+      "translationOn": "翻訳オン",
+      "translationOff": "翻訳オフ",
+      "modelNoTranslation": "{{model}} · 翻訳非対応",
+      "noTranslationModel": "翻訳に対応したダウンロード済みモデルがありません",
+      "switchFailed": "{{model}} への切り替えに失敗しました"
+    }
   },
   "whatsNew": {
     "title": "Handy v{{version}} の新機能"

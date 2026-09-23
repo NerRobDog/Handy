@@ -7,7 +7,8 @@
     "model": "Model",
     "quit": "Keluar",
     "cancel": "Batal",
-    "secureInputWarning": "⚠ Pintasan diblokir oleh Secure Input"
+    "secureInputWarning": "⚠ Pintasan diblokir oleh Secure Input",
+    "translateToEnglish": "Terjemahkan ke Bahasa Inggris"
   },
   "sidebar": {
     "general": "Umum",
@@ -152,6 +153,10 @@
       "translation": "Dapat menerjemahkan ke bahasa Inggris",
       "translate": "Terjemahkan",
       "streaming": "Menampilkan transkripsi langsung saat Anda berbicara"
+    },
+    "favorite": {
+      "add": "Beri bintang untuk pintasan Model Berikutnya",
+      "remove": "Hapus bintang"
     }
   },
   "settings": {
@@ -179,6 +184,14 @@
           "transcribe_with_post_process": {
             "name": "Pintasan Pascaproses",
             "description": "Opsional: pintasan khusus yang selalu menerapkan pascaproses AI pada transkripsi Anda."
+          },
+          "toggle_translation": {
+            "name": "Pintasan Terjemahan",
+            "description": "Mengaktifkan atau menonaktifkan terjemahan ke bahasa Inggris. Beralih ke model terakhir yang digunakan untuk menerjemahkan, dan kembali saat dinonaktifkan."
+          },
+          "cycle_model": {
+            "name": "Pintasan Model Berikutnya",
+            "description": "Beralih ke model berbintang berikutnya. Jika kurang dari dua yang berbintang, berpindah di antara semua model yang diunduh."
           }
         },
         "errors": {
@@ -702,7 +715,14 @@
   },
   "overlay": {
     "transcribing": "Mentranskripsikan...",
-    "processing": "Memproses..."
+    "processing": "Memproses...",
+    "notice": {
+      "translationOn": "Terjemahan aktif",
+      "translationOff": "Terjemahan nonaktif",
+      "modelNoTranslation": "{{model}} · tidak menerjemahkan",
+      "noTranslationModel": "Tidak ada model yang diunduh yang dapat menerjemahkan",
+      "switchFailed": "Gagal beralih ke {{model}}"
+    }
   },
   "secureInput": {
     "blockedWithCulprit_one": "{{name}} mungkin memblokir 1 pintasan",

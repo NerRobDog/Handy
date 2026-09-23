@@ -680,6 +680,18 @@ async setActiveModel(modelId: string) : Promise<Result<null, string>> {
     else return { status: "error", error: e  as any };
 }
 },
+/**
+ * Stars or unstars a model for the next-model shortcut. Returns the
+ * favorites in star order.
+ */
+async toggleFavoriteModel(modelId: string) : Promise<Result<string[], string>> {
+    try {
+    return { status: "ok", data: await TAURI_INVOKE("toggle_favorite_model", { modelId }) };
+} catch (e) {
+    if(e instanceof Error) throw e;
+    else return { status: "error", error: e  as any };
+}
+},
 async getCurrentModel() : Promise<Result<string, string>> {
     try {
     return { status: "ok", data: await TAURI_INVOKE("get_current_model") };
@@ -928,10 +940,12 @@ async isLaptop() : Promise<Result<boolean, string>> {
 
 export const events = __makeEvents__<{
 historyUpdatePayload: HistoryUpdatePayload,
+overlayNoticeEvent: OverlayNoticeEvent,
 streamPhaseEvent: StreamPhaseEvent,
 streamTextEvent: StreamTextEvent
 }>({
 historyUpdatePayload: "history-update-payload",
+overlayNoticeEvent: "overlay-notice-event",
 streamPhaseEvent: "stream-phase-event",
 streamTextEvent: "stream-text-event"
 })
@@ -977,7 +991,21 @@ hold_threshold_ms?: number; audio_feedback?: boolean; audio_feedback_volume?: nu
  * upgrading from before this key existed are blanked by the migration so they
  * see the current release's notes — see `apply_settings_migrations`.
  */
-whats_new_last_seen_version?: string; selected_model?: string; onboarding_completed?: boolean; always_on_microphone?: boolean; selected_microphone?: string | null; 
+whats_new_last_seen_version?: string; selected_model?: string; 
+/**
+ * Model ids starred for the next-model shortcut, in the order they were
+ * starred. Ids that are not downloaded are skipped when cycling.
+ */
+favorite_models?: string[]; 
+/**
+ * Last model that ran with translation on; the translation shortcut
+ * switches back to it when translation is turned on again.
+ */
+translation_model?: string | null; 
+/**
+ * Model to restore when the translation shortcut turns translation off.
+ */
+translation_return_model?: string | null; onboarding_completed?: boolean; always_on_microphone?: boolean; selected_microphone?: string | null; 
 /**
  * Which input channel to use on the selected microphone device.
  * None means "average all channels" (original behavior).
@@ -1065,6 +1093,19 @@ sha256: string | null } } |
 "Local"
 export type ModelUnloadTimeout = "never" | "immediately" | "min_2" | "min_5" | "min_10" | "min_15" | "hour_1" | "sec_15"
 export type OrtAcceleratorSetting = "auto" | "cpu" | "cuda" | "directml" | "rocm"
+/**
+ * Short-lived overlay message shown after a quick-switch shortcut.
+ */
+export type OverlayNoticeEvent = { kind: OverlayNoticeKind; 
+/**
+ * Display name of the model the notice is about, when there is one.
+ */
+model: string | null }
+/**
+ * What a transient overlay notice reports. The overlay localizes each kind
+ * (see `src/overlay/notice.ts`).
+ */
+export type OverlayNoticeKind = "translation_on" | "translation_off" | "model" | "model_no_translation" | "no_translation_model" | "switch_failed"
 export type OverlayPosition = "top" | "bottom"
 /**
  * Which recording overlay to display. `Minimal` and `Live` share one base

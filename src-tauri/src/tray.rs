@@ -63,6 +63,7 @@ struct MenuInputs {
     downloaded_models: Vec<(String, String)>,
     locale: String,
     update_checks_enabled: bool,
+    translate_to_english: bool,
 }
 
 /// Complete description of what the tray should look like.
@@ -225,6 +226,22 @@ pub fn refresh_tray_icon(app: &AppHandle) {
     sync_tray(app);
 }
 
+/// Whether Handy is recording or transcribing — the state in which the tray
+/// swaps the model controls for "Cancel". Quick-switch shortcuts use it to
+/// stay out of the way of an active capture.
+pub fn is_busy(app: &AppHandle) -> bool {
+    app.try_state::<TrayState>()
+        .map(|state| state.lock().icon_state.is_busy())
+        .unwrap_or(false)
+}
+
+/// Forces the next sync to rebuild the menu even if its inputs are unchanged.
+/// Needed after a check item was clicked but the action did not change the
+/// setting: the native item has already flipped its own check mark.
+pub fn invalidate_tray_menu(app: &AppHandle) {
+    sync_tray_with(app, |inner| inner.applied_menu = None);
+}
+
 /// Re-syncs the tray after something the menu depends on changed (model
 /// list/selection/loaded state, language, settings).
 pub fn update_tray_menu(app: &AppHandle) {
@@ -334,6 +351,7 @@ fn compute_desired(app: &AppHandle, icon_state: TrayIconState) -> TrayDesired {
             downloaded_models,
             locale: settings.app_language,
             update_checks_enabled: settings.update_checks_enabled,
+            translate_to_english: settings.translate_to_english,
         },
     }
 }
@@ -451,6 +469,16 @@ fn version_label() -> String {
     }
 }
 
+/// Returns the localized string, or the English equivalent if the localized
+/// version is empty (build.rs emits "" for missing keys).
+fn fallback_if_empty(localized: &str, english: &str) -> String {
+    if localized.is_empty() {
+        english.to_string()
+    } else {
+        localized.to_string()
+    }
+}
+
 /// Builds the tray menu and tooltip for the given inputs. Pure with respect
 /// to app state: everything it depends on is in `inputs`, plus the
 /// process-constant `HANDY_DISABLE_UPDATER` env flag behind
@@ -554,6 +582,21 @@ fn build_menu(app: &AppHandle, inputs: &MenuInputs) -> tauri::Result<(Menu<tauri
             None::<&str>,
         )?;
 
+        // Translation item: locales without a translation get the English string.
+        let english_strings = get_tray_translations(Some("en".to_string()));
+        let translate_label = fallback_if_empty(
+            &strings.translate_to_english,
+            &english_strings.translate_to_english,
+        );
+        let translate_i = CheckMenuItem::with_id(
+            app,
+            "toggle_translation",
+            &translate_label,
+            true,
+            inputs.translate_to_english,
+            None::<&str>,
+        )?;
+
         Menu::with_items(
             app,
             &[
@@ -563,6 +606,7 @@ fn build_menu(app: &AppHandle, inputs: &MenuInputs) -> tauri::Result<(Menu<tauri
                 &separator()?,
                 &model_submenu,
                 &unload_model_i,
+                &translate_i,
                 &separator()?,
                 &settings_i,
                 &check_updates_i,
@@ -668,7 +712,10 @@ pub fn copy_last_transcript(app: &AppHandle) {
 
 #[cfg(test)]
 mod tests {
-    use super::{last_transcript_text, load_tray_icon, MenuInputs, TrayDesired, TrayIconState};
+    use super::{
+        fallback_if_empty, last_transcript_text, load_tray_icon, MenuInputs, TrayDesired,
+        TrayIconState,
+    };
     use crate::managers::history::HistoryEntry;
 
     fn build_entry(transcription: &str, post_processed: Option<&str>) -> HistoryEntry {
@@ -694,6 +741,7 @@ mod tests {
             downloaded_models: vec![("small".to_string(), "Small".to_string())],
             locale: "en".to_string(),
             update_checks_enabled: true,
+            translate_to_english: false,
         }
     }
 
@@ -740,5 +788,22 @@ mod tests {
     #[test]
     fn idle_and_busy_menus_differ() {
         assert_ne!(inputs(false), inputs(true));
+    }
+
+    #[test]
+    fn translation_flag_changes_menu_inputs() {
+        let mut translating = inputs(false);
+        translating.translate_to_english = true;
+        assert_ne!(inputs(false), translating);
+    }
+
+    #[test]
+    fn fallback_if_empty_returns_english_when_localized_is_empty() {
+        assert_eq!(fallback_if_empty("", "English"), "English");
+    }
+
+    #[test]
+    fn fallback_if_empty_returns_localized_when_not_empty() {
+        assert_eq!(fallback_if_empty("Français", "English"), "Français");
     }
 }

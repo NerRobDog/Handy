@@ -7,7 +7,8 @@
     "model": "النموذج",
     "quit": "إنهاء",
     "cancel": "إلغاء",
-    "secureInputWarning": "⚠ الاختصارات محجوبة بواسطة Secure Input"
+    "secureInputWarning": "⚠ الاختصارات محجوبة بواسطة Secure Input",
+    "translateToEnglish": "ترجمة إلى الإنجليزية"
   },
   "sidebar": {
     "general": "عام",
@@ -152,7 +153,11 @@
       "translate": "ترجمة",
       "streaming": "يعرض النسخ المباشر أثناء التحدث"
     },
-    "legacy": "قديم"
+    "legacy": "قديم",
+    "favorite": {
+      "add": "تمييز بنجمة لاختصار النموذج التالي",
+      "remove": "إزالة النجمة"
+    }
   },
   "settings": {
     "general": {
@@ -176,6 +181,14 @@
           "transcribe_with_post_process": {
             "name": "مفتاح المعالجة اللاحقة",
             "description": "اختياري: مفتاح اختصار مخصص يطبق دائماً المعالجة اللاحقة بالذكاء الاصطناعي على التفريغ الصوتي."
+          },
+          "toggle_translation": {
+            "name": "اختصار الترجمة",
+            "description": "يشغّل أو يوقف الترجمة إلى الإنجليزية. يبدّل إلى آخر نموذج استُخدم للترجمة، ويعود إلى السابق عند الإيقاف."
+          },
+          "cycle_model": {
+            "name": "اختصار النموذج التالي",
+            "description": "يبدّل إلى النموذج التالي المميز بنجمة. إذا كان عدد النماذج المميزة أقل من اثنين، يتنقل بين جميع النماذج التي تم تنزيلها."
           }
         },
         "errors": {
@@ -699,7 +712,14 @@
   },
   "overlay": {
     "transcribing": "...جاري التفريغ",
-    "processing": "...جاري المعالجة"
+    "processing": "...جاري المعالجة",
+    "notice": {
+      "translationOn": "الترجمة مفعّلة",
+      "translationOff": "الترجمة متوقفة",
+      "modelNoTranslation": "{{model}} · لا يترجم",
+      "noTranslationModel": "لا يوجد نموذج تم تنزيله يدعم الترجمة",
+      "switchFailed": "تعذّر التبديل إلى {{model}}"
+    }
   },
   "whatsNew": {
     "title": "الجديد في Handy v{{version}}"
