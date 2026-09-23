@@ -1,0 +1,4 @@
+# Handy.satoru: build every binary with the self-updater off. Its endpoint
+# serves upstream Handy releases, which would overwrite the fork.
+[env]
+HANDY_DISABLE_UPDATER = "1"

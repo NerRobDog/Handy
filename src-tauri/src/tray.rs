@@ -444,10 +444,11 @@ pub fn tray_tooltip() -> String {
 }
 
 fn version_label() -> String {
+    let name = crate::fork::PRODUCT_NAME;
     if cfg!(debug_assertions) {
-        format!("Handy v{} (Dev)", env!("CARGO_PKG_VERSION"))
+        format!("{name} v{} (Dev)", env!("CARGO_PKG_VERSION"))
     } else {
-        format!("Handy v{}", env!("CARGO_PKG_VERSION"))
+        format!("{name} v{}", env!("CARGO_PKG_VERSION"))
     }
 }
 
