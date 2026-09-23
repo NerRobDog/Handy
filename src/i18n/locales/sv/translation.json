@@ -635,6 +635,11 @@
       "whatsNewUpdates": {
         "label": "Visa nyheter",
         "description": "Visa versionsinformation efter Handy-uppdateringar"
+      },
+      "fork": {
+        "title": "Handy.satoru",
+        "description": "En fork av Handy från CJ Pais med snabba kortkommandon för modell och översättning",
+        "button": "Visa fork"
       }
     }
   },

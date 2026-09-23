@@ -635,6 +635,11 @@
           "description": "High-performance tensor library for on-device machine learning inference",
           "details": "Handy's local speech-to-text is built on transcribe.cpp and ggml. Thanks to the amazing work by Georgi Gerganov and contributors."
         }
+      },
+      "fork": {
+        "title": "Handy.satoru",
+        "description": "A fork of Handy by CJ Pais with quick model and translation shortcuts",
+        "button": "View Fork"
       }
     }
   },

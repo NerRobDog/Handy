@@ -635,6 +635,11 @@
       "whatsNewUpdates": {
         "label": "הצג מה חדש",
         "description": "הצג הערות גרסה לאחר עדכוני Handy"
+      },
+      "fork": {
+        "title": "Handy.satoru",
+        "description": "פורק של Handy מאת CJ Pais עם קיצורי מקשים מהירים למודל ולתרגום",
+        "button": "צפה בפורק"
       }
     }
   },

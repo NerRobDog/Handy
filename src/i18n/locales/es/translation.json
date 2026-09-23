@@ -635,6 +635,11 @@
       "whatsNewUpdates": {
         "label": "Mostrar novedades",
         "description": "Mostrar notas de la versión después de las actualizaciones de Handy"
+      },
+      "fork": {
+        "title": "Handy.satoru",
+        "description": "Un fork de Handy por CJ Pais con atajos rápidos para el modelo y la traducción",
+        "button": "Ver fork"
       }
     }
   },

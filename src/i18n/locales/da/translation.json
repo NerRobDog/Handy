@@ -635,6 +635,11 @@
           "description": "Højtydende tensor-bibliotek til maskinlæringsinferens på enheden",
           "details": "Handys lokale tale-til-tekst funktionalitet er bygget på transcribe.cpp og ggml. Tak for det fantastiske arbejde af Georgi Gerganov og bidragyderne."
         }
+      },
+      "fork": {
+        "title": "Handy.satoru",
+        "description": "En fork af Handy fra CJ Pais med hurtige genveje til model og oversættelse",
+        "button": "Vis fork"
       }
     }
   },

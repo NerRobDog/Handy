@@ -635,6 +635,11 @@
       "whatsNewUpdates": {
         "label": "Hiển thị điểm mới",
         "description": "Hiển thị ghi chú phát hành sau khi Handy cập nhật"
+      },
+      "fork": {
+        "title": "Handy.satoru",
+        "description": "Bản fork của Handy bởi CJ Pais với phím tắt nhanh cho mô hình và dịch thuật",
+        "button": "Xem fork"
       }
     }
   },

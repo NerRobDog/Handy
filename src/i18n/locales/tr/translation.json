@@ -635,6 +635,11 @@
       "whatsNewUpdates": {
         "label": "Yenilikleri Göster",
         "description": "Handy güncellemelerinden sonra sürüm notlarını göster"
+      },
+      "fork": {
+        "title": "Handy.satoru",
+        "description": "CJ Pais tarafından yapılan Handy fork'u; model ve çeviri için hızlı kısayollar sunar",
+        "button": "Fork'u Görüntüle"
       }
     }
   },

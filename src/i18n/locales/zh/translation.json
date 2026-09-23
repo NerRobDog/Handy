@@ -635,6 +635,11 @@
       "whatsNewUpdates": {
         "label": "显示新功能",
         "description": "Handy 更新后显示发行说明"
+      },
+      "fork": {
+        "title": "Handy.satoru",
+        "description": "由 CJ Pais 打造的 Handy 复刻版，提供模型和翻译的快速快捷键",
+        "button": "查看复刻版"
       }
     }
   },

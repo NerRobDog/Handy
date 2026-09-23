@@ -635,6 +635,11 @@
       "whatsNewUpdates": {
         "label": "Zobrazovat novinky",
         "description": "Zobrazovat poznámky k vydání po aktualizacích Handy"
+      },
+      "fork": {
+        "title": "Handy.satoru",
+        "description": "Fork Handy od CJ Pais s rychlými zkratkami pro model a překlad",
+        "button": "Zobrazit fork"
       }
     }
   },
