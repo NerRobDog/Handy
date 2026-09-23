@@ -16,6 +16,7 @@ mod memory;
 mod overlay;
 mod paste_tx;
 pub mod portable;
+mod quick_switch;
 mod secure_input;
 mod settings;
 mod shortcut;
