@@ -112,6 +112,17 @@ pub fn remember_translation_model(settings: &mut AppSettings, model: &ModelCandi
     remember
 }
 
+/// Applies the Settings-window translation checkbox: a plain flag toggle that
+/// never switches models. Clears the remembered return model, since after a
+/// manual toggle it may no longer match what the user expects a later
+/// shortcut toggle-off to restore (e.g. shortcut on, uncheck in Settings,
+/// switch model from the tray, check in Settings again — the old return
+/// target is stale).
+pub fn apply_manual_translation_toggle(settings: &mut AppSettings, enabled: bool) {
+    settings.translate_to_english = enabled;
+    settings.translation_return_model = None;
+}
+
 fn downloaded_candidates(app: &AppHandle) -> Vec<ModelCandidate> {
     app.state::<Arc<ModelManager>>()
         .get_available_models()
@@ -426,6 +437,21 @@ mod tests {
         assert_eq!(favorites, favs(&["parakeet"]));
         assert!(toggle_favorite(&mut favorites, "large"));
         assert_eq!(favorites, favs(&["parakeet", "large"]));
+    }
+
+    #[test]
+    fn manual_translation_toggle_sets_flag_and_clears_return_model() {
+        let mut settings = crate::settings::get_default_settings();
+        settings.translation_return_model = Some("large".to_string());
+
+        apply_manual_translation_toggle(&mut settings, true);
+        assert!(settings.translate_to_english);
+        assert_eq!(settings.translation_return_model, None);
+
+        settings.translation_return_model = Some("large".to_string());
+        apply_manual_translation_toggle(&mut settings, false);
+        assert!(!settings.translate_to_english);
+        assert_eq!(settings.translation_return_model, None);
     }
 
     #[test]

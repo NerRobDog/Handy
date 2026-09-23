@@ -631,8 +631,10 @@ pub fn apply_window_theme(app: &AppHandle, theme: Theme) {
 #[specta::specta]
 pub fn change_translate_to_english_setting(app: AppHandle, enabled: bool) -> Result<(), String> {
     let mut settings = settings::get_settings(&app);
-    settings.translate_to_english = enabled;
+    crate::quick_switch::apply_manual_translation_toggle(&mut settings, enabled);
     settings::write_settings(&app, settings);
+    // Keep the tray check item in sync with a checkbox change made here.
+    tray::update_tray_menu(&app);
     Ok(())
 }
 
