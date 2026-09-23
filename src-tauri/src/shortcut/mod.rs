@@ -633,8 +633,10 @@ pub fn change_translate_to_english_setting(app: AppHandle, enabled: bool) -> Res
     let mut settings = settings::get_settings(&app);
     crate::quick_switch::apply_manual_translation_toggle(&mut settings, enabled);
     settings::write_settings(&app, settings);
-    // Keep the tray check item in sync with a checkbox change made here.
-    tray::update_tray_menu(&app);
+    // Keep the tray check item in sync with a checkbox change made here. Sync
+    // commands run on the main thread, and the tray snapshot can wait on the
+    // engine lock during a transcription (#1716), so take it off this thread.
+    std::thread::spawn(move || tray::update_tray_menu(&app));
     Ok(())
 }
 
