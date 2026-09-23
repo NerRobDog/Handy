@@ -63,4 +63,8 @@ jobs:
       # Release builds compile clean, as upstream's release.yml does, so no
       # stale cached native library ends up in a shipped bundle.
       no-cache: true
+      # The draft release's target_commitish is context.sha (== github.sha);
+      # build that exact commit instead of build.yml's default (github.ref),
+      # which can drift if the branch moves between dispatch and job start.
+      ref: ${{ github.sha }}
     secrets: inherit
