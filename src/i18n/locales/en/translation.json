@@ -153,6 +153,10 @@
       "translation": "Can translate to English",
       "translate": "Translate",
       "streaming": "Shows live transcription as you speak"
+    },
+    "favorite": {
+      "add": "Star for the Next Model shortcut",
+      "remove": "Unstar"
     }
   },
   "settings": {
@@ -180,6 +184,14 @@
           "transcribe_with_post_process": {
             "name": "Post-Processing Hotkey",
             "description": "Optional: A dedicated hotkey that always applies AI post-processing to your transcription."
+          },
+          "toggle_translation": {
+            "name": "Translation Shortcut",
+            "description": "Turns translation to English on or off. Switches to the last model used for translation, and back when turned off."
+          },
+          "cycle_model": {
+            "name": "Next Model Shortcut",
+            "description": "Switches to the next starred model. With fewer than two starred, cycles through all downloaded models."
           }
         },
         "errors": {

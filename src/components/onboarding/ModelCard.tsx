@@ -8,6 +8,7 @@ import {
   HardDrive,
   Languages,
   Loader2,
+  Star,
   Trash2,
 } from "lucide-react";
 import type { ModelInfo } from "@/bindings";
@@ -75,6 +76,9 @@ interface ModelCardProps {
   downloadProgress?: number;
   downloadSpeed?: number; // MB/s
   showRecommended?: boolean;
+  /** 1-based position in the next-model cycle; null when not starred. */
+  favoriteRank?: number | null;
+  onToggleFavorite?: (modelId: string) => void;
 }
 
 const ModelCard: React.FC<ModelCardProps> = ({
@@ -90,6 +94,8 @@ const ModelCard: React.FC<ModelCardProps> = ({
   downloadProgress,
   downloadSpeed,
   showRecommended = true,
+  favoriteRank = null,
+  onToggleFavorite,
 }) => {
   const { t } = useTranslation();
   const debugMode = useSettingsStore(
@@ -143,6 +149,12 @@ const ModelCard: React.FC<ModelCardProps> = ({
     e.stopPropagation();
     onDelete?.(model.id);
   };
+
+  const handleToggleFavorite = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    onToggleFavorite?.(model.id);
+  };
+  const isFavorite = favoriteRank !== null;
 
   return (
     <div
@@ -274,6 +286,33 @@ const ModelCard: React.FC<ModelCardProps> = ({
             )}
           </span>
         )}
+        {onToggleFavorite &&
+          (status === "available" || status === "active") && (
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={handleToggleFavorite}
+              aria-pressed={isFavorite}
+              title={
+                isFavorite
+                  ? t("modelSelector.favorite.remove")
+                  : t("modelSelector.favorite.add")
+              }
+              className={`flex items-center gap-1 ${showModelSize ? "" : "ms-auto"} ${
+                isFavorite
+                  ? "text-logo-primary"
+                  : "text-text/50 hover:text-logo-primary"
+              } hover:bg-logo-primary/10`}
+            >
+              <Star
+                className="w-3.5 h-3.5"
+                fill={isFavorite ? "currentColor" : "none"}
+              />
+              {isFavorite && (
+                <span className="text-xs tabular-nums">{favoriteRank}</span>
+              )}
+            </Button>
+          )}
         {onDelete && (status === "available" || status === "active") && (
           <Button
             variant="ghost"
